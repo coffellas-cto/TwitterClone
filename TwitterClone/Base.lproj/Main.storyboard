@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rNH-Y7-IYU">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -21,7 +21,7 @@
             </objects>
             <point key="canvasLocation" x="-355" y="-603"/>
         </scene>
-        <!--Tweet Home View Controller-->
+        <!--Timeline-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TweetHomeViewController" customModule="TwitterClone" customModuleProvider="target" sceneMemberID="viewController">
@@ -37,7 +37,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TWEET_CELL" textLabel="wRo-w9-SOR" detailTextLabel="n3g-FX-vfS" style="IBUITableViewCellStyleSubtitle" id="VLa-H6-wEX">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="TWEET_CELL" textLabel="wRo-w9-SOR" detailTextLabel="n3g-FX-vfS" style="IBUITableViewCellStyleSubtitle" id="VLa-H6-wEX">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VLa-H6-wEX" id="PzQ-OX-XQu">
@@ -45,14 +45,14 @@
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wRo-w9-SOR">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="n3g-FX-vfS">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
+                                                    <color key="textColor" red="0.50413797669491522" green="0.49791405105670639" blue="0.49791405105670639" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -64,28 +64,24 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="lRu-Ei-9we"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="U74-fE-a2a">
+                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                                <color key="color" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Ac6-dP-9Yn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="5aT-Ms-k44"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ac6-dP-9Yn" secondAttribute="bottom" id="A0V-uU-A5A"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Ac6-dP-9Yn" secondAttribute="trailing" constant="-16" id="DEM-qc-GmN"/>
-                            <constraint firstItem="Ac6-dP-9Yn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="kQb-Ch-LTc"/>
+                            <constraint firstItem="Ac6-dP-9Yn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="C52-e8-lrM"/>
+                            <constraint firstItem="Ac6-dP-9Yn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Gtb-2f-CaU"/>
+                            <constraint firstAttribute="centerY" secondItem="U74-fE-a2a" secondAttribute="centerY" id="Kci-tt-e6b"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ac6-dP-9Yn" secondAttribute="bottom" id="gBW-DS-qMk"/>
+                            <constraint firstAttribute="centerX" secondItem="U74-fE-a2a" secondAttribute="centerX" id="iJT-Tk-G5T"/>
+                            <constraint firstAttribute="trailing" secondItem="Ac6-dP-9Yn" secondAttribute="trailing" id="kHs-1S-MIV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="IDD-7s-H7a">
-                        <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="bar" selectedSegmentIndex="0" id="43u-0r-Z2f">
-                            <rect key="frame" x="180" y="7" width="240" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Normal"/>
-                                <segment title="A - Z"/>
-                            </segments>
-                        </segmentedControl>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Timeline" id="IDD-7s-H7a"/>
                     <connections>
-                        <outlet property="segmentedControl" destination="43u-0r-Z2f" id="9rH-wk-Sti"/>
+                        <outlet property="activityIndicator" destination="U74-fE-a2a" id="PfA-42-czP"/>
                         <outlet property="tweetsTable" destination="Ac6-dP-9Yn" id="8Ou-GD-6p6"/>
                     </connections>
                 </viewController>

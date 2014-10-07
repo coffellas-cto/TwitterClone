@@ -20,12 +20,16 @@ extension NSDateFormatter {
 class Tweet {
     // MARK: Public Properties
     var text: String?
+    var imageUrl: String?
     // MARK: Private Properties
     private var date: NSDate?
     
     // MARK: Methods
     init (tweetDictionary dic: NSDictionary) {
         text = dic["text"] as? String
+        if let user: AnyObject = dic["user"] {
+            imageUrl = user["profile_image_url"] as? String
+        }
         
         // Format that date
         var dateFormatter = NSDateFormatter(dateFormat: "EEE MMM dd HH:mm:ss Z yyyy")
@@ -98,7 +102,7 @@ class Tweet {
         }
         
         // Minute & Second        
-        switch components.second {
+        switch components.minute {
         case 0:
             return "\(components.second) seconds ago"
         case 1:

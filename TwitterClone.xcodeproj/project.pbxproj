@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9A0BC80619E32E7A007D2BB3 /* tweet.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A0BC80519E32E7A007D2BB3 /* tweet.json */; };
+		9A595E2419E47DF800AB7D45 /* AvatarDownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A595E2319E47DF800AB7D45 /* AvatarDownloadOperation.swift */; };
 		9AE1A9D619E313A300AA4D00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1A9D519E313A300AA4D00 /* AppDelegate.swift */; };
 		9AE1A9D919E313A300AA4D00 /* TwitterClone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1A9D719E313A300AA4D00 /* TwitterClone.xcdatamodeld */; };
 		9AE1A9DE19E313A300AA4D00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AE1A9DC19E313A300AA4D00 /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		9A0BC80519E32E7A007D2BB3 /* tweet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tweet.json; sourceTree = SOURCE_ROOT; };
+		9A595E2319E47DF800AB7D45 /* AvatarDownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarDownloadOperation.swift; sourceTree = "<group>"; };
 		9AE1A9D019E313A300AA4D00 /* TwitterClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AE1A9D419E313A300AA4D00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AE1A9D519E313A300AA4D00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				9AE1A9F819E313C500AA4D00 /* Tweet.swift */,
+				9A595E2319E47DF800AB7D45 /* AvatarDownloadOperation.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A595E2419E47DF800AB7D45 /* AvatarDownloadOperation.swift in Sources */,
 				9AE1A9D619E313A300AA4D00 /* AppDelegate.swift in Sources */,
 				9AE1A9FC19E32C4E00AA4D00 /* TweetHomeViewController.swift in Sources */,
 				9AE1A9D919E313A300AA4D00 /* TwitterClone.xcdatamodeld in Sources */,
@@ -317,7 +321,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -354,7 +358,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -367,6 +371,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TwitterClone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -377,6 +382,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TwitterClone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
