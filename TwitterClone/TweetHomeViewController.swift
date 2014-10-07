@@ -45,7 +45,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource {
         cell.backgroundColor = UIColor.clearColor()
         let arrayToShow = segmentedControl.selectedSegmentIndex == 0 ? tweetsArray : sortedTweetsArray
         cell.textLabel?.text = arrayToShow?[indexPath.row].text
-        cell.detailTextLabel?.text = arrayToShow?[indexPath.row].dateText
+        cell.detailTextLabel?.text = arrayToShow?[indexPath.row].dateString()
         return cell
     }
     
