@@ -11,12 +11,12 @@ import UIKit
 class AvatarDownloadOperation: NSOperation {
     
     let url: String
-    let indexPath: NSIndexPath
-    let completion: (NSData?, NSIndexPath) -> Void
+    let indexPath: NSIndexPath?
+    let completion: (NSData?, NSIndexPath?) -> Void
     
     // MARK: NSOperation specific methods
     
-    init(url: String, indexPath: NSIndexPath, completion: (NSData?, NSIndexPath) -> Void) {
+    init(url: String, indexPath: NSIndexPath, completion: (NSData?, NSIndexPath?) -> Void) {
         self.url = url
         self.indexPath = indexPath
         self.completion = completion
@@ -27,7 +27,7 @@ class AvatarDownloadOperation: NSOperation {
             return
         }
         
-        let imageData = NSData(contentsOfURL:NSURL(string: url))
+        let imageData = NSData(contentsOfURL:NSURL(string: url.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil)))
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.completion(imageData, self.indexPath)

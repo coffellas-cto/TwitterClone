@@ -23,7 +23,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tweetsTable.backgroundColor = UIColor(red: 245/255, green: 244/255, blue: 242/255, alpha: 1)
+        tweetsTable.backgroundColor = UIColor.clearColor()
         tweetsTable.estimatedRowHeight = 44
         tweetsTable.rowHeight = UITableViewAutomaticDimension
         
@@ -50,6 +50,11 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let vcToPush = segue.destinationViewController as SingleTweetViewController;
+        vcToPush.tweet = sender as? Tweet;
     }
     
     // MARK: UITableView Delegates Methods
@@ -79,7 +84,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             else {
                 cell.avatar.image = UIImage(named: "avatar.png")
                 
-                let avatarDownloadOperation = AvatarDownloadOperation(url: imageUrl, indexPath: indexPath, completion: { (imageData: NSData?, path: NSIndexPath) -> Void in
+                let avatarDownloadOperation = AvatarDownloadOperation(url: imageUrl, indexPath: indexPath, completion: { (imageData: NSData?, path: NSIndexPath?) -> Void in
                     if (indexPath.row < self.tweetsArray.count) && imageData != nil {
                         self.avatarImagesDictionary[imageUrl] = imageData
                         self.tweetsTable.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
@@ -93,11 +98,13 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tweetsArray.count;
+        return tweetsArray.count
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tweetsTable.deselectRowAtIndexPath(indexPath, animated: false)
         if indexPath.row < tweetsArray.count {
+            performSegueWithIdentifier("showSingleTweet", sender: tweetsArray[indexPath.row])
         }
     }
     

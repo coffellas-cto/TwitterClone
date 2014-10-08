@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension NSDateFormatter {
     convenience init(dateFormat: String) {
@@ -23,16 +24,49 @@ class Tweet {
     var imageUrl: String?
     var userName: String?
     var alias: String?
+    var backgroundColor: UIColor? {
+        get {
+            if userColorString != nil {
+                return colorWithHexString(userColorString!)
+            }
+            
+            return nil
+        }
+    }
+    
     // MARK: Private Properties
     private var date: NSDate?
+    private var userColorString: NSString?
     
     // MARK: Methods
+    private func colorWithHexString (hexString: NSString) -> UIColor? {
+        if (hexString.length != 6) {
+            return nil
+        }
+        
+        var rString = hexString.substringToIndex(2)
+        var gString = hexString.substringWithRange(NSRange(location: 2, length: 2))
+        var bString = hexString.substringWithRange(NSRange(location: 4, length: 2))
+        
+        var r:CUnsignedInt = 0, g:CUnsignedInt = 0, b:CUnsignedInt = 0
+        NSScanner.scannerWithString(rString).scanHexInt(&r)
+        NSScanner.scannerWithString(gString).scanHexInt(&g)
+        NSScanner.scannerWithString(bString).scanHexInt(&b)
+        
+        var rf: CGFloat = CGFloat(r)
+        var gf: CGFloat = CGFloat(g)
+        var bf: CGFloat = CGFloat(b)
+    
+        return UIColor(red: rf / 255.0, green: gf / 255.0, blue: bf / 255.0, alpha: 1.0)
+    }
+    
     init (tweetDictionary dic: NSDictionary) {
         text = dic["text"] as? String
         if let user: AnyObject = dic["user"] {
             imageUrl = user["profile_image_url"] as? String
             userName = user["name"] as? String
             alias = user["screen_name"] as? String
+            self.userColorString = user["profile_background_color"] as? NSString
         }
         
         // Format that date

@@ -13,6 +13,7 @@
 		9A9FAD0219E50EF500DEADE1 /* avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A60926E19E50D21006D4A34 /* avatar@2x.png */; };
 		9A9FAD0319E50EF900DEADE1 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A60926D19E50D21006D4A34 /* avatar.png */; };
 		9AC1E2CB19E4E42800AAE522 /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC1E2CA19E4E42800AAE522 /* TweetCell.swift */; };
+		9ACFB72D19E5FF550068982D /* SingleTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2888DB19E5DE1600BF4230 /* SingleTweetViewController.swift */; };
 		9AE1A9D619E313A300AA4D00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1A9D519E313A300AA4D00 /* AppDelegate.swift */; };
 		9AE1A9D919E313A300AA4D00 /* TwitterClone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1A9D719E313A300AA4D00 /* TwitterClone.xcdatamodeld */; };
 		9AE1A9DE19E313A300AA4D00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AE1A9DC19E313A300AA4D00 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		9A0BC80519E32E7A007D2BB3 /* tweet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tweet.json; sourceTree = SOURCE_ROOT; };
+		9A2888DB19E5DE1600BF4230 /* SingleTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleTweetViewController.swift; sourceTree = "<group>"; };
 		9A595E2319E47DF800AB7D45 /* AvatarDownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarDownloadOperation.swift; sourceTree = "<group>"; };
 		9A60926D19E50D21006D4A34 /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		9A60926E19E50D21006D4A34 /* avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar@2x.png"; sourceTree = "<group>"; };
@@ -74,6 +76,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A2888DD19E5DE1F00BF4230 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9AF411BA19E5B52000D398C8 /* TwitterNetworkController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		9A60926C19E50D21006D4A34 /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,7 +131,8 @@
 				9AE1A9D719E313A300AA4D00 /* TwitterClone.xcdatamodeld */,
 				9AE1A9D319E313A300AA4D00 /* Supporting Files */,
 				9AE1A9FA19E3150800AA4D00 /* Models */,
-				9AE1A9FD19E32C5300AA4D00 /* Controllers */,
+				9A2888DD19E5DE1F00BF4230 /* Controllers */,
+				9AE1A9FD19E32C5300AA4D00 /* ViewControllers */,
 				9AC1E2CC19E4E48400AAE522 /* Views */,
 			);
 			path = TwitterClone;
@@ -163,13 +174,13 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		9AE1A9FD19E32C5300AA4D00 /* Controllers */ = {
+		9AE1A9FD19E32C5300AA4D00 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				9AE1A9FB19E32C4E00AA4D00 /* TweetHomeViewController.swift */,
-				9AF411BA19E5B52000D398C8 /* TwitterNetworkController.swift */,
+				9A2888DB19E5DE1600BF4230 /* SingleTweetViewController.swift */,
 			);
-			name = Controllers;
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +291,7 @@
 				9AF411BB19E5B52000D398C8 /* TwitterNetworkController.swift in Sources */,
 				9AE1A9D619E313A300AA4D00 /* AppDelegate.swift in Sources */,
 				9AE1A9FC19E32C4E00AA4D00 /* TweetHomeViewController.swift in Sources */,
+				9ACFB72D19E5FF550068982D /* SingleTweetViewController.swift in Sources */,
 				9AC1E2CB19E4E42800AAE522 /* TweetCell.swift in Sources */,
 				9AE1A9D919E313A300AA4D00 /* TwitterClone.xcdatamodeld in Sources */,
 				9AE1A9F919E313C500AA4D00 /* Tweet.swift in Sources */,

@@ -35,6 +35,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="151" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ac6-dP-9Yn">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" red="0.96078431369999995" green="0.95686274510000002" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="TWEET_CELL" rowHeight="153" id="VLa-H6-wEX" customClass="TweetCell" customModule="TwitterClone" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -96,6 +97,7 @@
                                                     </constraints>
                                                 </view>
                                             </subviews>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstItem="078-Kd-rS4" firstAttribute="leading" secondItem="PzQ-OX-XQu" secondAttribute="leading" constant="60" id="0Pj-mx-uPQ"/>
                                                 <constraint firstItem="41T-m5-vFL" firstAttribute="leading" secondItem="jAV-Bd-OiT" secondAttribute="trailing" constant="5" id="3K8-lA-jAb"/>
@@ -135,7 +137,7 @@
                                 <color key="color" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.95686274510000002" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Ac6-dP-9Yn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="C52-e8-lrM"/>
                             <constraint firstItem="Ac6-dP-9Yn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Gtb-2f-CaU"/>
@@ -149,11 +151,58 @@
                     <connections>
                         <outlet property="activityIndicator" destination="U74-fE-a2a" id="PfA-42-czP"/>
                         <outlet property="tweetsTable" destination="Ac6-dP-9Yn" id="8Ou-GD-6p6"/>
+                        <segue destination="M5E-LH-wJ5" kind="show" identifier="showSingleTweet" id="RqO-HU-K6k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="340" y="-619"/>
+        </scene>
+        <!--Single Tweet View Controller-->
+        <scene sceneID="MYs-T8-VCh">
+            <objects>
+                <viewController id="M5E-LH-wJ5" customClass="SingleTweetViewController" customModule="TwitterClone" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hPM-Zb-RwT"/>
+                        <viewControllerLayoutGuide type="bottom" id="W1G-kH-GdC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4K0-FL-AaL">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5e-MW-TtS">
+                                <rect key="frame" x="0.0" y="64" width="600" height="56"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="7ti-5x-j7x"/>
+                                </constraints>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2NJ-oz-WQX">
+                                <rect key="frame" x="260" y="79" width="80" height="80"/>
+                                <color key="backgroundColor" red="0.72941176470000002" green="0.2578920032" blue="0.40721999440000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="gAX-sc-Zia"/>
+                                    <constraint firstAttribute="width" constant="80" id="wcY-kP-Ilf"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.95686274510000002" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="L5e-MW-TtS" firstAttribute="top" secondItem="hPM-Zb-RwT" secondAttribute="bottom" id="Jwc-zN-8Fi"/>
+                            <constraint firstItem="2NJ-oz-WQX" firstAttribute="top" secondItem="hPM-Zb-RwT" secondAttribute="bottom" constant="15" id="a5Q-im-dfX"/>
+                            <constraint firstItem="L5e-MW-TtS" firstAttribute="leading" secondItem="4K0-FL-AaL" secondAttribute="leading" id="kHZ-YB-bkK"/>
+                            <constraint firstAttribute="trailing" secondItem="L5e-MW-TtS" secondAttribute="trailing" id="mpS-qE-wjS"/>
+                            <constraint firstAttribute="centerX" secondItem="2NJ-oz-WQX" secondAttribute="centerX" id="neG-W6-fFq"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="avatarImage" destination="2NJ-oz-WQX" id="BBN-Sf-UCE"/>
+                        <outlet property="backgroundLineView" destination="L5e-MW-TtS" id="Hkh-0X-eKc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0az-fY-0wg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1029" y="-619"/>
         </scene>
     </scenes>
 </document>
