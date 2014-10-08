@@ -21,6 +21,7 @@
 		9AE1A9EF19E313A300AA4D00 /* TwitterCloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1A9EE19E313A300AA4D00 /* TwitterCloneTests.swift */; };
 		9AE1A9F919E313C500AA4D00 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1A9F819E313C500AA4D00 /* Tweet.swift */; };
 		9AE1A9FC19E32C4E00AA4D00 /* TweetHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1A9FB19E32C4E00AA4D00 /* TweetHomeViewController.swift */; };
+		9AF411BB19E5B52000D398C8 /* TwitterNetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF411BA19E5B52000D398C8 /* TwitterNetworkController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		9AE1A9EE19E313A300AA4D00 /* TwitterCloneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterCloneTests.swift; sourceTree = "<group>"; };
 		9AE1A9F819E313C500AA4D00 /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		9AE1A9FB19E32C4E00AA4D00 /* TweetHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetHomeViewController.swift; sourceTree = "<group>"; };
+		9AF411BA19E5B52000D398C8 /* TwitterNetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterNetworkController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				9AE1A9FB19E32C4E00AA4D00 /* TweetHomeViewController.swift */,
+				9AF411BA19E5B52000D398C8 /* TwitterNetworkController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A595E2419E47DF800AB7D45 /* AvatarDownloadOperation.swift in Sources */,
+				9AF411BB19E5B52000D398C8 /* TwitterNetworkController.swift in Sources */,
 				9AE1A9D619E313A300AA4D00 /* AppDelegate.swift in Sources */,
 				9AE1A9FC19E32C4E00AA4D00 /* TweetHomeViewController.swift in Sources */,
 				9AC1E2CB19E4E42800AAE522 /* TweetCell.swift in Sources */,

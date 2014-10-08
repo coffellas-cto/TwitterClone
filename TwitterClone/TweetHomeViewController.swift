@@ -28,53 +28,18 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         tweetsTable.estimatedRowHeight = 44
         tweetsTable.rowHeight = UITableViewAutomaticDimension
         
-        let accountType = ACAccountStore().accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-        ACAccountStore().requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
-            if !granted || (error != nil) {
+        self.activityIndicator.startAnimating()
+        
+        TwitterNetworkController.controller.fetchTimeline { (errorString: String?, tweets: [Tweet]?) -> Void in
+            self.activityIndicator.stopAnimating()
+            
+            if let errorString = errorString {
+                UIAlertView(title: "Error", message: errorString, delegate: nil, cancelButtonTitle: "OK").show()
                 return
             }
             
-            let accounts = ACAccountStore().accountsWithAccountType(accountType)
-            self.twitterAccount = accounts.first as? ACAccount
-            
-            self.activityIndicator.startAnimating()
-            
-            let timelineRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json"), parameters: ["count": "40"])
-            timelineRequest.account = self.twitterAccount
-            timelineRequest.performRequestWithHandler({ (jsonData: NSData!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
-                if error != nil {
-                    return
-                }
-                
-                var errorString: String?
-                switch response.statusCode {
-                case 200...299:
-                    break
-                case 400...499:
-                    errorString = "Client error"
-                case 500...599:
-                    errorString = "Server error"
-                default:
-                    errorString = "Unknown error"
-                }
-                
-                if errorString != nil {
-                    println("\(errorString): \(response.statusCode)")
-                    return
-                }
-                
-                if let tweetsArray = Tweet.parseJSONDataIntoTweets(jsonData) {
-                    self.tweetsArray.extend(tweetsArray)
-                }
-                
-                println(self.tweetsArray.count)
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.activityIndicator.stopAnimating()
-                    self.tweetsTable.reloadData()
-                })
-                
-            })
+            self.tweetsArray.extend(tweets!)
+            self.tweetsTable.reloadData()
         }
     }
 
