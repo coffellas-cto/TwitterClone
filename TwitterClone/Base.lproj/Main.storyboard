@@ -115,6 +115,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="alias" destination="41T-m5-vFL" id="1er-ft-s5E"/>
                                             <outlet property="avatar" destination="s5A-RU-hwa" id="yXW-hk-tB5"/>

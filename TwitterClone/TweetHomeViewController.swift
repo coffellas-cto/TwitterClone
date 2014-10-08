@@ -28,8 +28,6 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         tweetsTable.estimatedRowHeight = 44
         tweetsTable.rowHeight = UITableViewAutomaticDimension
         
-        tweetsTable.reloadData()
-        
         let accountType = ACAccountStore().accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         ACAccountStore().requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
             if !granted || (error != nil) {
@@ -124,9 +122,11 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         return tweetsArray.count;
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 150
+    override func viewDidLayoutSubviews() {
+        tweetsTable.separatorInset = UIEdgeInsetsZero
+        tweetsTable.layoutMargins = UIEdgeInsetsZero
     }
+    
     
     // MARK: Private Methods
 
