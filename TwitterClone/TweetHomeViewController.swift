@@ -24,7 +24,11 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tweetsTable.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        tweetsTable.backgroundColor = UIColor(red: 240/255, green: 239/255, blue: 233/255, alpha: 1)
+        tweetsTable.estimatedRowHeight = 44
+        tweetsTable.rowHeight = UITableViewAutomaticDimension
+        
+        tweetsTable.reloadData()
         
         let accountType = ACAccountStore().accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         ACAccountStore().requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
@@ -83,20 +87,25 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     // MARK: UITableView Delegates Methods
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as UITableViewCell
-        cell.backgroundColor = UIColor.clearColor()
+        var cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
+        
         cell.textLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping;
         cell.textLabel?.numberOfLines = 0;
-        cell.imageView?.image = nil // Reset image
+        cell.avatar.image = nil // Reset image
         
         var tweet = tweetsArray[indexPath.row]
-        cell.textLabel?.text = tweet.text
+        
+        
+        cell.userName.text = tweet.userName
+        cell.alias.text = "@" + tweet.alias!
+        cell.tweetText.text = tweet.text
+        cell.time.text = tweet.dateString()
+        
+        
         cell.detailTextLabel?.text = tweet.dateString()
         if let imageUrl = tweet.imageUrl {
             if let imageData = avatarImagesDictionary[imageUrl] {
-                cell.imageView?.image = UIImage(data: imageData, scale: UIScreen.mainScreen().scale)
-                cell.imageView?.layer.masksToBounds = true;
-                cell.imageView?.layer.cornerRadius = 12;
+                cell.avatar.image = UIImage(data: imageData, scale: UIScreen.mainScreen().scale)
             }
             else if cell.imageView?.image == nil {
                 let avatarDownloadOperation = AvatarDownloadOperation(url: imageUrl, indexPath: indexPath, completion: { (imageData: NSData?, path: NSIndexPath) -> Void in

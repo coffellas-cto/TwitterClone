@@ -21,6 +21,8 @@ class Tweet {
     // MARK: Public Properties
     var text: String?
     var imageUrl: String?
+    var userName: String?
+    var alias: String?
     // MARK: Private Properties
     private var date: NSDate?
     
@@ -29,6 +31,8 @@ class Tweet {
         text = dic["text"] as? String
         if let user: AnyObject = dic["user"] {
             imageUrl = user["profile_image_url"] as? String
+            userName = user["name"] as? String
+            alias = user["screen_name"] as? String
         }
         
         // Format that date
@@ -69,10 +73,8 @@ class Tweet {
     
         // Year
         switch components.year {
-        case 1:
-            return "1 year ago"
-        case 2...3:
-            return "\(components.year) years ago"
+        case 1...3:
+            return "\(components.year)y"
         case let x where x > 3:
             var dateFormatter = NSDateFormatter(dateFormat: "yyyy")
             return dateFormatter.stringFromDate(date!)
@@ -92,23 +94,16 @@ class Tweet {
         }
         
         // Hour
-        switch components.hour {
-        case 1:
-            return "1 hour ago"
-        case let x where x > 1:
-            return "\(components.hour) hours ago"
-        default:
-            break
+        if components.hour > 0 {
+            return "\(components.hour)h"
         }
         
         // Minute & Second        
         switch components.minute {
         case 0:
-            return "\(components.second) seconds ago"
-        case 1:
-            return "1 minute ago"
+            return "\(components.second)s"
         default:
-            return "\(components.minute) minutes ago"
+            return "\(components.minute)m"
         }
         
     }
