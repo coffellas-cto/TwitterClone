@@ -24,7 +24,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tweetsTable.backgroundColor = UIColor(red: 240/255, green: 239/255, blue: 233/255, alpha: 1)
+        tweetsTable.backgroundColor = UIColor(red: 245/255, green: 244/255, blue: 242/255, alpha: 1)
         tweetsTable.estimatedRowHeight = 44
         tweetsTable.rowHeight = UITableViewAutomaticDimension
         
@@ -91,7 +91,6 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         
         cell.textLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping;
         cell.textLabel?.numberOfLines = 0;
-        cell.avatar.image = nil // Reset image
         
         var tweet = tweetsArray[indexPath.row]
         
@@ -101,13 +100,13 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         cell.tweetText.text = tweet.text
         cell.time.text = tweet.dateString()
         
-        
-        cell.detailTextLabel?.text = tweet.dateString()
         if let imageUrl = tweet.imageUrl {
             if let imageData = avatarImagesDictionary[imageUrl] {
                 cell.avatar.image = UIImage(data: imageData, scale: UIScreen.mainScreen().scale)
             }
-            else if cell.imageView?.image == nil {
+            else {
+                cell.avatar.image = UIImage(named: "avatar.png")
+                
                 let avatarDownloadOperation = AvatarDownloadOperation(url: imageUrl, indexPath: indexPath, completion: { (imageData: NSData?, path: NSIndexPath) -> Void in
                     if (indexPath.row < self.tweetsArray.count) && imageData != nil {
                         self.avatarImagesDictionary[imageUrl] = imageData
