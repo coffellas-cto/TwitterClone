@@ -16,7 +16,6 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     // MARK: Private properties
     private var tweetsArray = [Tweet]()
-    private var twitterAccount: ACAccount?
     private var backgroundQueue: NSOperationQueue = NSOperationQueue()
     private var avatarImagesDictionary = Dictionary<String, NSData>()
 
@@ -34,6 +33,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             self.activityIndicator.stopAnimating()
             
             if let errorString = errorString {
+                println(errorString)
                 UIAlertView(title: "Error", message: errorString, delegate: nil, cancelButtonTitle: "OK").show()
                 return
             }
@@ -41,6 +41,11 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             self.tweetsArray.extend(tweets!)
             self.tweetsTable.reloadData()
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        tweetsTable.separatorInset = UIEdgeInsetsZero
+        tweetsTable.layoutMargins = UIEdgeInsetsZero
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,11 +57,15 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
         
-        cell.textLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping;
-        cell.textLabel?.numberOfLines = 0;
+        if indexPath.row >= tweetsArray.count {
+            cell.userName.text = nil
+            cell.alias.text = nil
+            cell.tweetText.text = nil
+            cell.time.text = nil
+            return cell
+        }
         
         var tweet = tweetsArray[indexPath.row]
-        
         
         cell.userName.text = tweet.userName
         cell.alias.text = "@" + tweet.alias!
@@ -87,9 +96,9 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         return tweetsArray.count;
     }
     
-    override func viewDidLayoutSubviews() {
-        tweetsTable.separatorInset = UIEdgeInsetsZero
-        tweetsTable.layoutMargins = UIEdgeInsetsZero
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row < tweetsArray.count {
+        }
     }
     
     

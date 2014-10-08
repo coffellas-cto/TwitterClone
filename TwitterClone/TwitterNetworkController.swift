@@ -76,7 +76,9 @@ class TwitterNetworkController {
         timelineRequest.account = self.twitterAccount
         timelineRequest.performRequestWithHandler({ (data: NSData!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
             if error != nil {
-                completion(errorString: "Error happened during constructing request", data: nil)
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    completion(errorString: "Error happened during constructing request", data: nil)
+                })
                 return
             }
             
@@ -92,8 +94,10 @@ class TwitterNetworkController {
                 errorString = "Unknown error"
             }
             
-            if errorString != nil {
-                completion(errorString: "\(errorString): \(response.statusCode)", data: nil)
+            if let errorString = errorString {
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    completion(errorString: "\(errorString): \(response.statusCode)", data: nil)
+                })
                 return
             }
             
