@@ -37,7 +37,7 @@
                             <fragment content="Text">
                                 <attributes>
                                     <color key="NSColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
-                                    <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                    <font key="NSFont" size="16" name="HelveticaNeue-Light"/>
                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                 </attributes>
                             </fragment>

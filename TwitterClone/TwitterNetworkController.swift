@@ -53,19 +53,15 @@ class TwitterNetworkController {
         })
     }
     
+    func fetchSelf(completion: (errorString: String?, userData: NSData?) -> Void) {
+        performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/account/verify_credentials.json", parameters: ["include_entities": false, "skip_status": true]) { (errorString, data) -> Void in
+            completion(errorString: nil, userData: data)
+        }
+    }
+    
     func fetchTimeline(completion: (errorString: String?, tweetsData: NSData?) -> Void) {
         performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: ["count": "40"], completion: { (errorString, data) -> Void in
-            if errorString != nil {
-                completion(errorString: errorString, tweetsData: nil)
-                return
-            }
-            
-            if let data = data {
-                completion(errorString: nil, tweetsData: data)
-                return
-            }
-            
-            completion(errorString: "Could not parse JSON data", tweetsData: nil)
+            completion(errorString: errorString, tweetsData: data)
         })
     }
     
@@ -116,6 +112,11 @@ class TwitterNetworkController {
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     completion(errorString: "\(errorString): \(response.statusCode)", data: nil)
                 })
+                return
+            }
+            
+            if data == nil {
+                completion(errorString: "Fatal error! Request succeed, but data is nil!", data: nil)
                 return
             }
             

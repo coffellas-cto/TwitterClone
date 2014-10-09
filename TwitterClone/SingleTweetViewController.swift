@@ -31,7 +31,6 @@ class SingleTweetViewController: UIViewController {
         self.avatarImage.image = UIImage(named: "avatar_big")
         
         if let tweet = tweet {
-            self.title = (tweet.userName)! + " says:"
             if let text = tweet.text {
                 self.text.attributedText = NSAttributedString(string: text)
             }
@@ -44,21 +43,22 @@ class SingleTweetViewController: UIViewController {
             
             time.text = tweet.dateString()
             
-            if let backgroundColor = tweet.backgroundColor {
-                backgroundLineView.backgroundColor = backgroundColor
-                avatarImage.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
+            if let user = tweet.user {
+                self.title = (user.userName)! + " says:"
+                if let imageUrl = user.imageUrl {
+                    TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil), completion: { (image) -> Void in
+                        self.avatarImage.image = image
+                    })
+                }
                 
-            }
-            else {
-                backgroundLineView.backgroundColor = UIColor(white: 0, alpha: 0.1)
-                avatarImage.layer.borderColor = UIColor(white: 0, alpha: 0.2).CGColor
-            }
-            
-            
-            if let imageUrl = tweet.imageUrl {
-                TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil), completion: { (image) -> Void in
-                    self.avatarImage.image = image
-                })
+                if let backgroundColor = user.backgroundColor {
+                    backgroundLineView.backgroundColor = backgroundColor
+                    avatarImage.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
+                }
+                else {
+                    backgroundLineView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+                    avatarImage.layer.borderColor = UIColor(white: 0, alpha: 0.2).CGColor
+                }
             }
         }
         else {

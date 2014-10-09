@@ -17,16 +17,56 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     // MARK: Private properties
     private var tweetsArray = [Tweet]()
     private var avatarImagesDictionary = Dictionary<String, UIImage>()
+    private var headerView: UserHeaderView?
 
     // MARK: UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
+        // Setup UI stuff
         tweetsTable.backgroundColor = UIColor.clearColor()
         tweetsTable.estimatedRowHeight = 200
         tweetsTable.rowHeight = UITableViewAutomaticDimension
         
         tweetsTable.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "TWEET_CELL")
+                
+        if let headerView = NSBundle.mainBundle().loadNibNamed("UserHeader", owner: self, options: nil).first as? UserHeaderView {
+            self.headerView = headerView
+            headerView.frame = CGRectMake(0, 0, tweetsTable.frame.width, 96)
+            tweetsTable.tableHeaderView?.addSubview(headerView)
+            headerView.userName.text = nil
+            headerView.userAlias.text = nil
+            headerView.avatar.image = UIImage(named: "avatar_big")
+            
+            // Fill user view
+            TwitterNetworkController.controller.fetchSelf { (errorString, userData) -> Void in
+                headerView.activityIndicator.stopAnimating()
+                if let errorString = errorString {
+                    self.showError(errorString)
+                    return
+                }
+                
+                let user: User? = User(jsonData: userData!)
+                if let user = user {
+                    headerView.userName.text = user.userName
+                    headerView.userAlias.text = "@" + user.alias!
+                    if let backgroundColor = user.backgroundColor {
+                        headerView.backgroundColor = backgroundColor
+                        headerView.avatar.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
+                    }
+                    
+                    if let imageUrl = user.imageUrl {
+                        TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)) { (image) -> Void in
+                            if let image = image {
+                                headerView.avatar.image = image
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Network calls
         
         self.activityIndicator.startAnimating()
         
@@ -34,8 +74,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             self.activityIndicator.stopAnimating()
             
             if let errorString = errorString {
-                println(errorString)
-                UIAlertView(title: "Error", message: errorString, delegate: nil, cancelButtonTitle: "OK").show()
+                self.showError(errorString)
                 return
             }
             
@@ -62,6 +101,12 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         vcToPush.tweet = sender as? Tweet;
     }
     
+    // MARK: Private Methods
+    func showError(errorString: NSString) {
+        println(errorString)
+        UIAlertView(title: "Error", message: errorString, delegate: nil, cancelButtonTitle: "OK").show()
+    }
+    
     // MARK: UITableView Delegates Methods
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -79,33 +124,36 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         
         var tweet = tweetsArray[indexPath.row]
         
-        cell.userName.text = tweet.userName
-        cell.alias.text = "@" + tweet.alias!
         cell.tweetText.text = tweet.text
         cell.time.text = tweet.dateString()
         cell.favouriteCount.text = tweet.favouriteCount != nil ? String(tweet.favouriteCount!) : nil
         cell.retweets.text = tweet.retweets != nil ? String(tweet.retweets!) : nil
         
-        if let imageUrl = tweet.imageUrl {
-            if let image = avatarImagesDictionary[imageUrl] {
-                cell.avatar.image = image
-            }
-            else {
-                cell.avatar.image = UIImage(named: "avatar")
-                
-                TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl) { (image) -> Void in
-                    if let image = image {
-                        self.avatarImagesDictionary[imageUrl] = image
-                        
-                        if let cell = self.tweetsTable.cellForRowAtIndexPath(indexPath) as? TweetCell {
-                            cell.avatar.image = image
+        if let user = tweet.user {
+            cell.userName.text = user.userName
+            cell.alias.text = "@" + user.alias!
+
+            if let imageUrl = user.imageUrl {
+                if let image = avatarImagesDictionary[imageUrl] {
+                    cell.avatar.image = image
+                }
+                else {
+                    cell.avatar.image = UIImage(named: "avatar")
+                    
+                    TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl) { (image) -> Void in
+                        if let image = image {
+                            self.avatarImagesDictionary[imageUrl] = image
+                            
+                            if let cell = self.tweetsTable.cellForRowAtIndexPath(indexPath) as? TweetCell {
+                                cell.avatar.image = image
+                            }
                         }
                     }
                 }
             }
-        }
-        else {
-            cell.avatar.image = UIImage(named: "avatar")
+            else {
+                cell.avatar.image = UIImage(named: "avatar")
+            }
         }
         
         return cell
@@ -121,6 +169,10 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             performSegueWithIdentifier("showSingleTweet", sender: tweetsArray[indexPath.row])
         }
     }
+    
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        return tableView.dequeueReusableHeaderFooterViewWithIdentifier("TEST") as? UIView
+//    }
     
     
     // MARK: Private Methods

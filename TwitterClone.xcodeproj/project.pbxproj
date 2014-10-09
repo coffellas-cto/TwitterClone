@@ -18,6 +18,9 @@
 		9A219E4519E64C2E0069B000 /* retweets_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A219E3F19E64C2E0069B000 /* retweets_small@2x.png */; };
 		9A219E4619E64C2E0069B000 /* retweets_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A219E4019E64C2E0069B000 /* retweets_small@3x.png */; };
 		9A3BF14219E708700070542E /* TweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A3BF14119E708700070542E /* TweetCell.xib */; };
+		9A3BF14719E7218C0070542E /* UserHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A3BF14619E7218C0070542E /* UserHeader.xib */; };
+		9A3BF14919E724B10070542E /* UserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3BF14819E724B10070542E /* UserHeaderView.swift */; };
+		9A3BF14B19E735630070542E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3BF14A19E735630070542E /* User.swift */; };
 		9A9FAD0119E50EF200DEADE1 /* avatar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A60926F19E50D21006D4A34 /* avatar@3x.png */; };
 		9A9FAD0219E50EF500DEADE1 /* avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A60926E19E50D21006D4A34 /* avatar@2x.png */; };
 		9AC1E2CB19E4E42800AAE522 /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC1E2CA19E4E42800AAE522 /* TweetCell.swift */; };
@@ -57,6 +60,9 @@
 		9A219E4019E64C2E0069B000 /* retweets_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retweets_small@3x.png"; sourceTree = "<group>"; };
 		9A2888DB19E5DE1600BF4230 /* SingleTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleTweetViewController.swift; sourceTree = "<group>"; };
 		9A3BF14119E708700070542E /* TweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetCell.xib; sourceTree = "<group>"; };
+		9A3BF14619E7218C0070542E /* UserHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeader.xib; sourceTree = "<group>"; };
+		9A3BF14819E724B10070542E /* UserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHeaderView.swift; sourceTree = "<group>"; };
+		9A3BF14A19E735630070542E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9A60926E19E50D21006D4A34 /* avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar@2x.png"; sourceTree = "<group>"; };
 		9A60926F19E50D21006D4A34 /* avatar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar@3x.png"; sourceTree = "<group>"; };
 		9AC1E2CA19E4E42800AAE522 /* TweetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
@@ -107,6 +113,7 @@
 				9AE1A9DC19E313A300AA4D00 /* Main.storyboard */,
 				9A3BF14119E708700070542E /* TweetCell.xib */,
 				9AE1A9E119E313A300AA4D00 /* LaunchScreen.xib */,
+				9A3BF14619E7218C0070542E /* UserHeader.xib */,
 			);
 			name = "Nibs & Storyboards";
 			sourceTree = "<group>";
@@ -135,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				9AC1E2CA19E4E42800AAE522 /* TweetCell.swift */,
+				9A3BF14819E724B10070542E /* UserHeaderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -204,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				9AE1A9F819E313C500AA4D00 /* Tweet.swift */,
+				9A3BF14A19E735630070542E /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -304,6 +313,7 @@
 				9A219E3319E640B60069B000 /* fav_small@2x.png in Resources */,
 				9A219E2E19E613730069B000 /* avatar_big@3x.png in Resources */,
 				9AE1A9E019E313A300AA4D00 /* Images.xcassets in Resources */,
+				9A3BF14719E7218C0070542E /* UserHeader.xib in Resources */,
 				9A3BF14219E708700070542E /* TweetCell.xib in Resources */,
 				9A219E3A19E641B60069B000 /* fav_big@3x.png in Resources */,
 				9A219E3919E641B60069B000 /* fav_big@2x.png in Resources */,
@@ -332,8 +342,10 @@
 			files = (
 				9AF411BB19E5B52000D398C8 /* TwitterNetworkController.swift in Sources */,
 				9AE1A9D619E313A300AA4D00 /* AppDelegate.swift in Sources */,
+				9A3BF14919E724B10070542E /* UserHeaderView.swift in Sources */,
 				9AE1A9FC19E32C4E00AA4D00 /* TweetHomeViewController.swift in Sources */,
 				9ACFB72D19E5FF550068982D /* SingleTweetViewController.swift in Sources */,
+				9A3BF14B19E735630070542E /* User.swift in Sources */,
 				9AC1E2CB19E4E42800AAE522 /* TweetCell.swift in Sources */,
 				9AE1A9D919E313A300AA4D00 /* TwitterClone.xcdatamodeld in Sources */,
 				9AE1A9F919E313C500AA4D00 /* Tweet.swift in Sources */,
