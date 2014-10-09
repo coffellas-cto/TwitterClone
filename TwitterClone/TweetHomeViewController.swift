@@ -67,6 +67,8 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             cell.alias.text = nil
             cell.tweetText.text = nil
             cell.time.text = nil
+            cell.favouriteCount.text = nil
+            cell.retweets = nil
             return cell
         }
         
@@ -76,6 +78,8 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         cell.alias.text = "@" + tweet.alias!
         cell.tweetText.text = tweet.text
         cell.time.text = tweet.dateString()
+        cell.favouriteCount.text = tweet.favouriteCount != nil ? String(tweet.favouriteCount!) : nil
+        cell.retweets.text = tweet.retweets != nil ? String(tweet.retweets!) : nil
         
         if let imageUrl = tweet.imageUrl {
             if let image = avatarImagesDictionary[imageUrl] {

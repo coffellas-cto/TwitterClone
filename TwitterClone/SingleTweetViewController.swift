@@ -13,7 +13,8 @@ class SingleTweetViewController: UIViewController {
     @IBOutlet weak var backgroundLineView: UIView!
     @IBOutlet weak var text: UILabel!
     @IBOutlet weak var time: UILabel!
-    
+    @IBOutlet weak var favouriteCount: UILabel!
+    @IBOutlet weak var retweets: UILabel!
     
     var tweet: Tweet?
     private var backgroundQueue: NSOperationQueue = NSOperationQueue()
@@ -38,6 +39,9 @@ class SingleTweetViewController: UIViewController {
             else {
                 self.text.attributedText = nil
             }
+            
+            favouriteCount.text = tweet.favouriteCount != nil ? String(tweet.favouriteCount!) : nil
+            retweets.text = tweet.retweets != nil ? String(tweet.retweets!) : nil
             
             time.text = tweet.dateString()
             
@@ -66,6 +70,8 @@ class SingleTweetViewController: UIViewController {
             self.title = nil
             text.text = nil
             time.text = nil
+            favouriteCount.text = nil
+            retweets.text = nil
         }
     }
 

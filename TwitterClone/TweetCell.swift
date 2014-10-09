@@ -14,12 +14,19 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var alias: UILabel!
     @IBOutlet weak var tweetText: UILabel!
     @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var favouriteCount: UILabel!
+    @IBOutlet weak var retweets: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
         avatar.layer.masksToBounds = true;
         avatar.layer.cornerRadius = 20;
+        
+        var bgColorView = UIView()
+        bgColorView.backgroundColor = UIColor(white: 0, alpha: 0.07)
+        self.selectedBackgroundView = bgColorView
         
         if self.respondsToSelector("setLayoutMargins:") {
             self.layoutMargins = UIEdgeInsetsZero

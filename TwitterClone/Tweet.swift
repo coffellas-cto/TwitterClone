@@ -24,6 +24,8 @@ class Tweet {
     var imageUrl: String?
     var userName: String?
     var alias: String?
+    var favouriteCount: Int?
+    var retweets: Int?
     var backgroundColor: UIColor? {
         get {
             if userColorString != nil {
@@ -41,6 +43,8 @@ class Tweet {
     // MARK: 
     init (tweetDictionary dic: NSDictionary) {
         text = dic["text"] as? String
+        favouriteCount = dic["favorite_count"] as? Int
+        retweets = dic["retweet_count"] as? Int
         if let user: AnyObject = dic["user"] {
             imageUrl = user["profile_image_url"] as? String
             userName = user["name"] as? String
