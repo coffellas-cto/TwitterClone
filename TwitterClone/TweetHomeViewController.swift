@@ -18,6 +18,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     private var tweetsArray = [Tweet]()
     private var avatarImagesDictionary = Dictionary<String, UIImage>()
     private var headerView: UserHeaderView?
+    private var singleTweetVC: SingleTweetViewController?
 
     // MARK: UIViewController Methods
     override func viewDidLoad() {
@@ -96,11 +97,6 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         super.didReceiveMemoryWarning()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let vcToPush = segue.destinationViewController as SingleTweetViewController;
-        vcToPush.tweet = sender as? Tweet;
-    }
-    
     // MARK: Private Methods
     func showError(errorString: NSString) {
         println(errorString)
@@ -165,8 +161,15 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tweetsTable.deselectRowAtIndexPath(indexPath, animated: false)
+        
+        if singleTweetVC == nil {
+            singleTweetVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SINGLE_TWEET_VC") as? SingleTweetViewController
+        }
+        
+        
         if indexPath.row < tweetsArray.count {
-            performSegueWithIdentifier("showSingleTweet", sender: tweetsArray[indexPath.row])
+            singleTweetVC!.tweet = tweetsArray[indexPath.row]
+            self.navigationController?.pushViewController(singleTweetVC!, animated: true)
         }
     }
     

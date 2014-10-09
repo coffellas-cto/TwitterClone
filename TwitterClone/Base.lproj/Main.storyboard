@@ -65,7 +65,6 @@
                     <connections>
                         <outlet property="activityIndicator" destination="U74-fE-a2a" id="PfA-42-czP"/>
                         <outlet property="tweetsTable" destination="Ac6-dP-9Yn" id="8Ou-GD-6p6"/>
-                        <segue destination="M5E-LH-wJ5" kind="show" identifier="showSingleTweet" id="RqO-HU-K6k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -75,7 +74,7 @@
         <!--Single Tweet View Controller-->
         <scene sceneID="MYs-T8-VCh">
             <objects>
-                <viewController id="M5E-LH-wJ5" customClass="SingleTweetViewController" customModule="TwitterClone" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SINGLE_TWEET_VC" id="M5E-LH-wJ5" customClass="SingleTweetViewController" customModule="TwitterClone" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hPM-Zb-RwT"/>
                         <viewControllerLayoutGuide type="bottom" id="W1G-kH-GdC"/>

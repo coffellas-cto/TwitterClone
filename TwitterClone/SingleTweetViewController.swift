@@ -46,6 +46,7 @@ class SingleTweetViewController: UIViewController {
             if let user = tweet.user {
                 self.title = (user.userName)! + " says:"
                 if let imageUrl = user.imageUrl {
+                    // TODO: It downloads same images over and over again. Fix
                     TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil), completion: { (image) -> Void in
                         self.avatarImage.image = image
                     })
