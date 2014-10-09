@@ -16,20 +16,21 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     // MARK: Private properties
     private var tweetsArray = [Tweet]()
-    private var backgroundQueue: NSOperationQueue = NSOperationQueue()
     private var avatarImagesDictionary = Dictionary<String, UIImage>()
 
     // MARK: UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         tweetsTable.backgroundColor = UIColor.clearColor()
-        tweetsTable.estimatedRowHeight = 44
+        tweetsTable.estimatedRowHeight = 200
         tweetsTable.rowHeight = UITableViewAutomaticDimension
+        
+        tweetsTable.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "TWEET_CELL")
         
         self.activityIndicator.startAnimating()
         
-        TwitterNetworkController.controller.fetchTimeline { (errorString: String?, tweets: [Tweet]?) -> Void in
+        TwitterNetworkController.controller.fetchTimeline { (errorString: String?, tweetsData: NSData?) -> Void in
             self.activityIndicator.stopAnimating()
             
             if let errorString = errorString {
@@ -38,8 +39,12 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                 return
             }
             
-            self.tweetsArray.extend(tweets!)
-            self.tweetsTable.reloadData()
+            if let tweetsData = tweetsData {
+                if let tweets = Tweet.parseJSONDataIntoTweets(tweetsData) {
+                    self.tweetsArray.extend(tweets)
+                    self.tweetsTable.reloadData()
+                }
+            }
         }
     }
     
@@ -88,17 +93,15 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             else {
                 cell.avatar.image = UIImage(named: "avatar")
                 
-                let avatarDownloadOperation = AvatarDownloadOperation(url: imageUrl, indexPath: indexPath, completion: { (imageData: NSData?, path: NSIndexPath?) -> Void in
-                    if (indexPath.row < self.tweetsArray.count) && imageData != nil {
-                        let newImage = UIImage(data: imageData!, scale: UIScreen.mainScreen().scale)
-                        self.avatarImagesDictionary[imageUrl] = newImage
+                TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl) { (image) -> Void in
+                    if let image = image {
+                        self.avatarImagesDictionary[imageUrl] = image
                         
                         if let cell = self.tweetsTable.cellForRowAtIndexPath(indexPath) as? TweetCell {
-                            cell.avatar.image = newImage
+                            cell.avatar.image = image
                         }
                     }
-                })
-                backgroundQueue.addOperation(avatarDownloadOperation)
+                }
             }
         }
         else {

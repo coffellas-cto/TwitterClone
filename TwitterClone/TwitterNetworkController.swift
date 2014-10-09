@@ -13,6 +13,7 @@ import Social
 class TwitterNetworkController {
     private var twitterAccount: ACAccount?
     private var accountType: ACAccountType
+    private var urlSession: NSURLSession
     
     // Singleton instantiation
     class var controller: TwitterNetworkController {
@@ -28,30 +29,47 @@ class TwitterNetworkController {
     
     init () {
         accountType = ACAccountStore().accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+        urlSession = NSURLSession.sharedSession()//
+        (configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
     }
     
     // MARK: Public Methods
     
-    func fetchTimeline(completion: (errorString: String?, tweets: [Tweet]?) -> Void) {
+    func downloadImage(#imageURLString: String, completion: (image: UIImage?) -> Void) {
+//        NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: imageURLString), completionHandler: { (data: NSData!, resonse: NSURLResponse!, error: NSError!) -> Void in
+//            if error != nil {
+//                println("\(error.localizedDescription) for \(imageURLString)")
+//                return
+//            }
+//            
+//            completion(image: UIImage(data: data))
+//        }).resume()
+        
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            let image = UIImage(data: NSData(contentsOfURL: NSURL(string: imageURLString)))
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                completion(image: image)
+            })
+        })
+    }
+    
+    func fetchTimeline(completion: (errorString: String?, tweetsData: NSData?) -> Void) {
         performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: ["count": "40"], completion: { (errorString, data) -> Void in
             if errorString != nil {
-                completion(errorString: errorString, tweets: nil)
+                completion(errorString: errorString, tweetsData: nil)
                 return
             }
             
             if let data = data {
-                if let tweetsArray = Tweet.parseJSONDataIntoTweets(data) {
-                    completion(errorString: nil, tweets: tweetsArray)
-                    return
-                }
+                completion(errorString: nil, tweetsData: data)
+                return
             }
             
-            completion(errorString: "Could not parse JSON data", tweets: nil)
+            completion(errorString: "Could not parse JSON data", tweetsData: nil)
         })
     }
     
     // MARK: Private Methods
-    
     private func performRequest(#requestMethod: SLRequestMethod, URLString: String, parameters: [NSObject : AnyObject]!, completion: (errorString: String?, data: NSData?) -> Void) {
         if twitterAccount != nil {
             self.performRequestUnderHood(requestMethod: requestMethod, URLString: URLString, parameters: parameters, completion: completion)

@@ -17,7 +17,6 @@ class SingleTweetViewController: UIViewController {
     @IBOutlet weak var retweets: UILabel!
     
     var tweet: Tweet?
-    private var backgroundQueue: NSOperationQueue = NSOperationQueue()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,16 +54,12 @@ class SingleTweetViewController: UIViewController {
                 avatarImage.layer.borderColor = UIColor(white: 0, alpha: 0.2).CGColor
             }
             
-            backgroundQueue.cancelAllOperations()
-            backgroundQueue.addOperationWithBlock({ () -> Void in
-                
-                if let imageUrl = tweet.imageUrl {
-                    let imageData = NSData(contentsOfURL:NSURL(string: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil)))
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        self.avatarImage.image = UIImage(data: imageData)
-                    })
-                }
-            })
+            
+            if let imageUrl = tweet.imageUrl {
+                TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil), completion: { (image) -> Void in
+                    self.avatarImage.image = image
+                })
+            }
         }
         else {
             self.title = nil

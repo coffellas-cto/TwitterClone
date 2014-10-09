@@ -24,6 +24,7 @@ class TweetCell: UITableViewCell {
         avatar.layer.masksToBounds = true;
         avatar.layer.cornerRadius = 20;
         
+        self.backgroundColor = UIColor.clearColor()
         var bgColorView = UIView()
         bgColorView.backgroundColor = UIColor(white: 0, alpha: 0.07)
         self.selectedBackgroundView = bgColorView
