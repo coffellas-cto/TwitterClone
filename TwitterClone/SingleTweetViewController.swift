@@ -11,7 +11,10 @@ import UIKit
 class SingleTweetViewController: UIViewController {
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var backgroundLineView: UIView!
-
+    @IBOutlet weak var text: UILabel!
+    @IBOutlet weak var time: UILabel!
+    
+    
     var tweet: Tweet?
     private var backgroundQueue: NSOperationQueue = NSOperationQueue()
 
@@ -25,8 +28,18 @@ class SingleTweetViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.avatarImage.image = UIImage(named: "avatar_big")
+        
         if let tweet = tweet {
             self.title = (tweet.userName)! + " says:"
+            if let text = tweet.text {
+                self.text.attributedText = NSAttributedString(string: text)
+            }
+            else {
+                self.text.attributedText = nil
+            }
+            
+            time.text = tweet.dateString()
             
             if let backgroundColor = tweet.backgroundColor {
                 backgroundLineView.backgroundColor = backgroundColor
@@ -42,13 +55,17 @@ class SingleTweetViewController: UIViewController {
             backgroundQueue.addOperationWithBlock({ () -> Void in
                 
                 if let imageUrl = tweet.imageUrl {
-                    
                     let imageData = NSData(contentsOfURL:NSURL(string: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil)))
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                         self.avatarImage.image = UIImage(data: imageData)
                     })
                 }
             })
+        }
+        else {
+            self.title = nil
+            text.text = nil
+            time.text = nil
         }
     }
 

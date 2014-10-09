@@ -38,6 +38,23 @@ class Tweet {
     private var date: NSDate?
     private var userColorString: NSString?
     
+    // MARK: 
+    init (tweetDictionary dic: NSDictionary) {
+        text = dic["text"] as? String
+        if let user: AnyObject = dic["user"] {
+            imageUrl = user["profile_image_url"] as? String
+            userName = user["name"] as? String
+            alias = user["screen_name"] as? String
+            self.userColorString = user["profile_background_color"] as? NSString
+        }
+        
+        // Format that date
+        var dateFormatter = NSDateFormatter(dateFormat: "EEE MMM dd HH:mm:ss Z yyyy")
+        if let originalDateText = dic["created_at"] as? String {
+            date = dateFormatter.dateFromString(originalDateText)
+        }
+    }
+    
     // MARK: Methods
     private func colorWithHexString (hexString: NSString) -> UIColor? {
         if (hexString.length != 6) {
@@ -58,22 +75,6 @@ class Tweet {
         var bf: CGFloat = CGFloat(b)
     
         return UIColor(red: rf / 255.0, green: gf / 255.0, blue: bf / 255.0, alpha: 1.0)
-    }
-    
-    init (tweetDictionary dic: NSDictionary) {
-        text = dic["text"] as? String
-        if let user: AnyObject = dic["user"] {
-            imageUrl = user["profile_image_url"] as? String
-            userName = user["name"] as? String
-            alias = user["screen_name"] as? String
-            self.userColorString = user["profile_background_color"] as? NSString
-        }
-        
-        // Format that date
-        var dateFormatter = NSDateFormatter(dateFormat: "EEE MMM dd HH:mm:ss Z yyyy")
-        if let originalDateText = dic["created_at"] as? String {
-            date = dateFormatter.dateFromString(originalDateText)
-        }
     }
     
     // MARK: Class Methods

@@ -15,8 +15,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func customizeAppearance() {
-        UINavigationBar.appearance().barTintColor = UIColor.whiteColor()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor(white: 0, alpha: 0.8), NSFontAttributeName: UIFont(name: "HelveticaNeue-Thin", size: 20)]
+        UINavigationBar.appearance().barTintColor = UIColor(red: 48 / 255, green: 48 / 255, blue: 47 / 255, alpha: 1)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue-Thin", size: 20)]
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 16)], forState: .Normal)
+        
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        
+//        [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:
+//        @{UITextAttributeTextColor:[UIColor blackColor],
+//            UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+//            UITextAttributeTextShadowColor:[UIColor whiteColor],
+//            UITextAttributeFont:[UIFont boldSystemFontOfSize:12.0]
+//        }
+//        forState:UIControlStateNormal];
     }
 
 

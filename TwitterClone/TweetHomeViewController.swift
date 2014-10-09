@@ -17,7 +17,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     // MARK: Private properties
     private var tweetsArray = [Tweet]()
     private var backgroundQueue: NSOperationQueue = NSOperationQueue()
-    private var avatarImagesDictionary = Dictionary<String, NSData>()
+    private var avatarImagesDictionary = Dictionary<String, UIImage>()
 
     // MARK: UIViewController Methods
     override func viewDidLoad() {
@@ -78,20 +78,27 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         cell.time.text = tweet.dateString()
         
         if let imageUrl = tweet.imageUrl {
-            if let imageData = avatarImagesDictionary[imageUrl] {
-                cell.avatar.image = UIImage(data: imageData, scale: UIScreen.mainScreen().scale)
+            if let image = avatarImagesDictionary[imageUrl] {
+                cell.avatar.image = image
             }
             else {
-                cell.avatar.image = UIImage(named: "avatar.png")
+                cell.avatar.image = UIImage(named: "avatar")
                 
                 let avatarDownloadOperation = AvatarDownloadOperation(url: imageUrl, indexPath: indexPath, completion: { (imageData: NSData?, path: NSIndexPath?) -> Void in
                     if (indexPath.row < self.tweetsArray.count) && imageData != nil {
-                        self.avatarImagesDictionary[imageUrl] = imageData
-                        self.tweetsTable.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                        let newImage = UIImage(data: imageData!, scale: UIScreen.mainScreen().scale)
+                        self.avatarImagesDictionary[imageUrl] = newImage
+                        
+                        if let cell = self.tweetsTable.cellForRowAtIndexPath(indexPath) as? TweetCell {
+                            cell.avatar.image = newImage
+                        }
                     }
                 })
                 backgroundQueue.addOperation(avatarDownloadOperation)
             }
+        }
+        else {
+            cell.avatar.image = UIImage(named: "avatar")
         }
         
         return cell
