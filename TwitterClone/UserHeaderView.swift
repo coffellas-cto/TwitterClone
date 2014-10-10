@@ -22,15 +22,12 @@ class UserHeaderView: UIView {
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userAlias: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+        
+    override func awakeFromNib() {
+        super.awakeFromNib()
         avatar.layer.masksToBounds = true
         avatar.layer.cornerRadius = 40
         avatar.layer.borderWidth = 1
+        avatar.layer.borderColor = UIColor.clearColor().CGColor
     }
 }

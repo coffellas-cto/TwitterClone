@@ -39,6 +39,7 @@ class Tweet {
             
             user = User()
             if let user = user {
+                user.id = userObject["id"] as? Int
                 user.imageUrl = userObject["profile_image_url"] as? String
                 user.userName = userObject["name"] as? String
                 user.alias = userObject["screen_name"] as? String

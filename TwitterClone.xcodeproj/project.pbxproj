@@ -112,8 +112,8 @@
 			children = (
 				9AE1A9DC19E313A300AA4D00 /* Main.storyboard */,
 				9A3BF14119E708700070542E /* TweetCell.xib */,
-				9AE1A9E119E313A300AA4D00 /* LaunchScreen.xib */,
 				9A3BF14619E7218C0070542E /* UserHeader.xib */,
+				9AE1A9E119E313A300AA4D00 /* LaunchScreen.xib */,
 			);
 			name = "Nibs & Storyboards";
 			sourceTree = "<group>";

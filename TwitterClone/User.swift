@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class User {
+    var id: Int?
     var imageUrl: String?
     var userName: String?
     var alias: String?
@@ -34,6 +35,7 @@ class User {
             userName = userObject["name"] as? String
             alias = userObject["screen_name"] as? String
             userColorString = userObject["profile_background_color"] as? NSString
+            id = userObject["id"] as? Int
         }
     }
     

@@ -10,19 +10,32 @@ import UIKit
 import Accounts
 import Social
 
+enum TweetHomeViewControllerMode {
+    case Home
+    case User
+}
+
 class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: Outlets
     @IBOutlet weak var tweetsTable: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    // MARK: Properties
+    var mode: TweetHomeViewControllerMode = .Home
+    var curUser: User?
+    var homeUser: User?
+    
     // MARK: Private properties
     private var tweetsArray = [Tweet]()
     private var avatarImagesDictionary = Dictionary<String, UIImage>()
-    private var headerView: UserHeaderView?
+    private var headerView: UserHeaderView!
     private var singleTweetVC: SingleTweetViewController?
 
     // MARK: UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userInfoTapped:", name: "userInfoTapped", object: nil)
         
         // Setup UI stuff
         tweetsTable.backgroundColor = UIColor.clearColor()
@@ -39,51 +52,31 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             headerView.userAlias.text = nil
             headerView.avatar.image = UIImage(named: "avatar_big")
             
-            // Fill user view
-            TwitterNetworkController.controller.fetchSelf { (errorString, userData) -> Void in
-                headerView.activityIndicator.stopAnimating()
-                if let errorString = errorString {
-                    self.showError(errorString)
-                    return
-                }
-                
-                let user: User? = User(jsonData: userData!)
-                if let user = user {
-                    headerView.userName.text = user.userName
-                    headerView.userAlias.text = "@" + user.alias!
-                    if let backgroundColor = user.backgroundColor {
-                        headerView.backgroundColor = backgroundColor
-                        headerView.avatar.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
-                    }
-                    
-                    if let imageUrl = user.imageUrl {
-                        TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)) { (image) -> Void in
-                            if let image = image {
-                                headerView.avatar.image = image
-                            }
-                        }
-                    }
-                }
-            }
+            headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showSelfTimeline:"))
         }
         
         // Network calls
-        
         self.activityIndicator.startAnimating()
         
-        TwitterNetworkController.controller.fetchTimeline { (errorString: String?, tweetsData: NSData?) -> Void in
-            self.activityIndicator.stopAnimating()
-            
-            if let errorString = errorString {
-                self.showError(errorString)
+        TwitterNetworkController.controller.setup { (errorString) -> Void in
+            if errorString != nil {
+                self.showError(errorString!)
                 return
             }
             
-            if let tweetsData = tweetsData {
-                if let tweets = Tweet.parseJSONDataIntoTweets(tweetsData) {
-                    self.tweetsArray.extend(tweets)
-                    self.tweetsTable.reloadData()
+            TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id) { (errorString: String?, tweetsData: NSData?) -> Void in
+                self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
+            }
+            
+            // Fill user view
+            if (self.curUser == nil) {
+                TwitterNetworkController.controller.fetchSelf { (errorString, userData) -> Void in
+                    self.processUserData(errorString: errorString, userData: userData)
                 }
+            }
+            else if let userName = self.curUser!.userName {
+                self.showUserInfo(nil)
+                self.title = userName + "'s tweets"
             }
         }
     }
@@ -97,10 +90,96 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         super.didReceiveMemoryWarning()
     }
     
+    // MARK: Methods
+    func userInfoTapped(notification: NSNotification) {
+        if let tweetCell = notification.object as? TweetCell {
+            if let indexPath = tweetsTable.indexPathForCell(tweetCell) {
+                if tweetsArray.count > indexPath.row {
+                    let tweet = tweetsArray[indexPath.row] as Tweet
+                    if let selectedUser = tweet.user {
+                        if let curUser = curUser {
+                            if selectedUser.id == curUser.id {
+                                return
+                            }
+                        }
+                        
+                        showSelectedUser(selectedUser)
+                    }
+                }
+            }
+        }
+    }
+    
+    func showSelfTimeline(sender: UIGestureRecognizer) {
+        if homeUser != nil {
+            showSelectedUser(homeUser!)
+        }
+    }
+    
     // MARK: Private Methods
-    func showError(errorString: NSString) {
+    private func showSelectedUser(selectedUser: User) {
+        if let timeLineViewController = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("HOME_TIMELINE_VC") as? TweetHomeViewController {
+            timeLineViewController.mode = .User
+            timeLineViewController.curUser = selectedUser
+            self.navigationController?.pushViewController(timeLineViewController, animated: true)
+        }
+    }
+    
+    private func showError(errorString: NSString) {
         println(errorString)
         UIAlertView(title: "Error", message: errorString, delegate: nil, cancelButtonTitle: "OK").show()
+    }
+    
+    private func processTimelineData(#errorString: String?, tweetsData: NSData?) {
+        self.activityIndicator.stopAnimating()
+        
+        if let errorString = errorString {
+            self.showError(errorString)
+            return
+        }
+        
+        if let tweetsData = tweetsData {
+            if let tweets = Tweet.parseJSONDataIntoTweets(tweetsData) {
+                self.tweetsArray.extend(tweets)
+                self.tweetsTable.reloadData()
+            }
+        }
+    }
+    
+    private func processUserData(#errorString: String?, userData: NSData?) {
+        if let errorString = errorString {
+            self.showError(errorString)
+            return
+        }
+        
+        showUserInfo(User(jsonData: userData!))
+    }
+    
+    private func showUserInfo(var user: User?) {
+        if user == nil {
+            user = curUser
+        }
+        else {
+            homeUser = user
+        }
+        
+        if let user = user {
+            headerView.userName.text = user.userName
+            headerView.userAlias.text = "@" + user.alias!
+            if let backgroundColor = user.backgroundColor {
+                headerView.backgroundColor = backgroundColor
+                headerView.avatar.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
+            }
+            
+            if let imageUrl = user.imageUrl {
+                TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)) { (image) -> Void in
+                    self.headerView.activityIndicator.stopAnimating()
+                    if let image = image {
+                        self.headerView.avatar.image = image
+                    }
+                }
+            }
+        }
     }
     
     // MARK: UITableView Delegates Methods
@@ -173,11 +252,10 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         }
     }
     
+    deinit {
+    }
+    
 //    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 //        return tableView.dequeueReusableHeaderFooterViewWithIdentifier("TEST") as? UIView
 //    }
-    
-    
-    // MARK: Private Methods
-
 }

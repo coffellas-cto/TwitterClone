@@ -29,15 +29,21 @@ class TweetCell: UITableViewCell {
         bgColorView.backgroundColor = UIColor(white: 0, alpha: 0.07)
         self.selectedBackgroundView = bgColorView
         
-        if self.respondsToSelector("setLayoutMargins:") {
-            self.layoutMargins = UIEdgeInsetsZero
-        }
+        self.layoutMargins = UIEdgeInsetsZero
+        
+        avatar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapFired:"))
+        userName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapFired:"))
+        alias.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapFired:"))
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func tapFired(sender: UIGestureRecognizer) {
+        NSNotificationCenter.defaultCenter().postNotificationName("userInfoTapped", object: self)
     }
 
 }

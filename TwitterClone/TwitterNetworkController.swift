@@ -35,6 +35,27 @@ class TwitterNetworkController {
     
     // MARK: Public Methods
     
+    func setup(completion: (errorString: String?) -> Void) {
+        ACAccountStore().requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
+            var errorString: String?
+            if error != nil {
+                errorString = "\(error!.localizedDescription)"
+            }
+            else if !granted {
+                errorString = "Access to accounts not granted"
+            }
+            
+            if errorString == nil {
+                let accounts = ACAccountStore().accountsWithAccountType(self.accountType)
+                self.twitterAccount = accounts.first as? ACAccount
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                completion(errorString: errorString)
+            })
+        }
+    }
+    
     func downloadImage(#imageURLString: String, completion: (image: UIImage?) -> Void) {
 //        NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: imageURLString), completionHandler: { (data: NSData!, resonse: NSURLResponse!, error: NSError!) -> Void in
 //            if error != nil {
@@ -55,42 +76,36 @@ class TwitterNetworkController {
     
     func fetchSelf(completion: (errorString: String?, userData: NSData?) -> Void) {
         performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/account/verify_credentials.json", parameters: ["include_entities": false, "skip_status": true]) { (errorString, data) -> Void in
-            completion(errorString: nil, userData: data)
+            completion(errorString: errorString, userData: data)
         }
     }
     
-    func fetchTimeline(completion: (errorString: String?, tweetsData: NSData?) -> Void) {
-        performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: ["count": "40"], completion: { (errorString, data) -> Void in
-            completion(errorString: errorString, tweetsData: data)
-        })
+    func fetchUserTimeline(userID: Int?, completion: (errorString: String?, tweetsData: NSData?) -> Void) {
+        if let userID = userID {
+            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/user_timeline.json", parameters: ["count": "40", "user_id": "\(userID)"], completion: { (errorString, data) -> Void in
+                completion(errorString: errorString, tweetsData: data)
+            })
+        }
+        else {
+            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: ["count": "40"], completion: { (errorString, data) -> Void in
+                completion(errorString: errorString, tweetsData: data)
+            })
+        }
     }
     
     // MARK: Private Methods
     private func performRequest(#requestMethod: SLRequestMethod, URLString: String, parameters: [NSObject : AnyObject]!, completion: (errorString: String?, data: NSData?) -> Void) {
-        if twitterAccount != nil {
-            self.performRequestUnderHood(requestMethod: requestMethod, URLString: URLString, parameters: parameters, completion: completion)
-            return
+        if twitterAccount == nil {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                completion(errorString: "No Twitter account", data: nil)
+            })
         }
         
-        ACAccountStore().requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
-            if !granted || (error != nil) {
-                completion(errorString: "Access to accounts not granted", data: nil)
-                return
-            }
-            
-            let accounts = ACAccountStore().accountsWithAccountType(self.accountType)
-            self.twitterAccount = accounts.first as? ACAccount
-            
-            self.performRequestUnderHood(requestMethod: requestMethod, URLString: URLString, parameters: parameters, completion: completion)
-        }
-    }
-    
-    private func performRequestUnderHood(#requestMethod: SLRequestMethod, URLString: String, parameters: [NSObject : AnyObject]!, completion: (errorString: String?, data: NSData?) -> Void) {
         let timelineRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: requestMethod, URL: NSURL(string: URLString), parameters: parameters)
         timelineRequest.account = self.twitterAccount
         timelineRequest.performRequestWithHandler({ (data: NSData!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
             if error != nil {
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     completion(errorString: "Error happened during constructing request", data: nil)
                 })
                 return
@@ -109,18 +124,20 @@ class TwitterNetworkController {
             }
             
             if let errorString = errorString {
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     completion(errorString: "\(errorString): \(response.statusCode)", data: nil)
                 })
                 return
             }
             
             if data == nil {
-                completion(errorString: "Fatal error! Request succeed, but data is nil!", data: nil)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    completion(errorString: "Fatal error! Request succeed, but data is nil!", data: nil)
+                })
                 return
             }
             
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completion(errorString: nil, data: data)
             })
             
