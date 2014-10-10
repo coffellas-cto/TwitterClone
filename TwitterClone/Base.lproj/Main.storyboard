@@ -46,24 +46,17 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="lRu-Ei-9we"/>
                                 </connections>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="U74-fE-a2a">
-                                <rect key="frame" x="290" y="290" width="20" height="20"/>
-                                <color key="color" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.95686274510000002" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Ac6-dP-9Yn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="C52-e8-lrM"/>
                             <constraint firstItem="Ac6-dP-9Yn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Gtb-2f-CaU"/>
-                            <constraint firstAttribute="centerY" secondItem="U74-fE-a2a" secondAttribute="centerY" id="Kci-tt-e6b"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ac6-dP-9Yn" secondAttribute="bottom" id="gBW-DS-qMk"/>
-                            <constraint firstAttribute="centerX" secondItem="U74-fE-a2a" secondAttribute="centerX" id="iJT-Tk-G5T"/>
                             <constraint firstAttribute="trailing" secondItem="Ac6-dP-9Yn" secondAttribute="trailing" id="kHs-1S-MIV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Timeline" id="IDD-7s-H7a"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="U74-fE-a2a" id="PfA-42-czP"/>
                         <outlet property="tweetsTable" destination="Ac6-dP-9Yn" id="8Ou-GD-6p6"/>
                     </connections>
                 </viewController>

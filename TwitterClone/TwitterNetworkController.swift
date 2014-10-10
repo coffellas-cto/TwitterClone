@@ -80,14 +80,15 @@ class TwitterNetworkController {
         }
     }
     
-    func fetchUserTimeline(userID: Int?, completion: (errorString: String?, tweetsData: NSData?) -> Void) {
+    func fetchUserTimeline(userID: Int?, sinceID: Int, maxID: Int?, completion: (errorString: String?, tweetsData: NSData?) -> Void) {
+        let count = sinceID == 0 ? "40" : "0"
         if let userID = userID {
-            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/user_timeline.json", parameters: ["count": "40", "user_id": "\(userID)"], completion: { (errorString, data) -> Void in
+            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/user_timeline.json", parameters: ["count": count, "user_id": "\(userID)", "since_id": sinceID], completion: { (errorString, data) -> Void in
                 completion(errorString: errorString, tweetsData: data)
             })
         }
         else {
-            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: ["count": "40"], completion: { (errorString, data) -> Void in
+            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: ["count": count, "since_id": sinceID], completion: { (errorString, data) -> Void in
                 completion(errorString: errorString, tweetsData: data)
             })
         }
@@ -99,6 +100,7 @@ class TwitterNetworkController {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completion(errorString: "No Twitter account", data: nil)
             })
+            return
         }
         
         let timelineRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: requestMethod, URL: NSURL(string: URLString), parameters: parameters)

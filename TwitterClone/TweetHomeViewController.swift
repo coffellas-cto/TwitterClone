@@ -15,15 +15,20 @@ enum TweetHomeViewControllerMode {
     case User
 }
 
+// TODO: block refreshControl before the first call to timeline
+
+
 class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: Outlets
     @IBOutlet weak var tweetsTable: UITableView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: Properties
     var mode: TweetHomeViewControllerMode = .Home
     var curUser: User?
     var homeUser: User?
+    
+    //paired
+    var refreshControl: UIRefreshControl! = UIRefreshControl()
     
     // MARK: Private properties
     private var tweetsArray = [Tweet]()
@@ -42,6 +47,14 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         tweetsTable.estimatedRowHeight = 200
         tweetsTable.rowHeight = UITableViewAutomaticDimension
         
+        // paired
+        var tableViewController = UITableViewController()
+        tableViewController.tableView = tweetsTable
+        if refreshControl != nil {
+            refreshControl.addTarget(self, action: "refreshed", forControlEvents: UIControlEvents.ValueChanged)
+            tableViewController.refreshControl = refreshControl
+        }
+        
         tweetsTable.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "TWEET_CELL")
                 
         if let headerView = NSBundle.mainBundle().loadNibNamed("UserHeader", owner: self, options: nil).first as? UserHeaderView {
@@ -56,7 +69,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
         // Network calls
-        self.activityIndicator.startAnimating()
+        refreshControl.beginRefreshing()
         
         TwitterNetworkController.controller.setup { (errorString) -> Void in
             if errorString != nil {
@@ -64,7 +77,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                 return
             }
             
-            TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id) { (errorString: String?, tweetsData: NSData?) -> Void in
+            TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: 0, maxID: 0) { (errorString: String?, tweetsData: NSData?) -> Void in
                 self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
             }
             
@@ -91,7 +104,23 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     // MARK: Methods
+    func refreshed() {
+        if tweetsArray.count > 0 {
+            let tweet = tweetsArray[0]
+            if let tweetID = tweet.id {
+                TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: tweetID, maxID: 0) { (errorString, tweetsData) -> Void in
+                    self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
+                }
+            }
+        }
+        println("REFRESHED")
+    }
+    
     func userInfoTapped(notification: NSNotification) {
+        if refreshControl.refreshing {
+            return
+        }
+        
         if let tweetCell = notification.object as? TweetCell {
             if let indexPath = tweetsTable.indexPathForCell(tweetCell) {
                 if tweetsArray.count > indexPath.row {
@@ -111,6 +140,10 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func showSelfTimeline(sender: UIGestureRecognizer) {
+        if refreshControl.refreshing {
+            return
+        }
+        
         if homeUser != nil {
             showSelectedUser(homeUser!)
         }
@@ -131,7 +164,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     private func processTimelineData(#errorString: String?, tweetsData: NSData?) {
-        self.activityIndicator.stopAnimating()
+        refreshControl.endRefreshing()
         
         if let errorString = errorString {
             self.showError(errorString)
@@ -139,8 +172,9 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
         if let tweetsData = tweetsData {
-            if let tweets = Tweet.parseJSONDataIntoTweets(tweetsData) {
-                self.tweetsArray.extend(tweets)
+            if var tweets = Tweet.parseJSONDataIntoTweets(tweetsData) {
+                self.tweetsArray = tweets
+                println(self.tweetsArray.count) 
                 self.tweetsTable.reloadData()
             }
         }
@@ -164,18 +198,20 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
         if let user = user {
-            headerView.userName.text = user.userName
-            headerView.userAlias.text = "@" + user.alias!
-            if let backgroundColor = user.backgroundColor {
-                headerView.backgroundColor = backgroundColor
-                headerView.avatar.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
-            }
-            
-            if let imageUrl = user.imageUrl {
-                TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)) { (image) -> Void in
-                    self.headerView.activityIndicator.stopAnimating()
-                    if let image = image {
-                        self.headerView.avatar.image = image
+            if let headerView = headerView {
+                headerView.userName.text = user.userName
+                headerView.userAlias.text = "@" + user.alias!
+                if let backgroundColor = user.backgroundColor {
+                    headerView.backgroundColor = backgroundColor
+                    headerView.avatar.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
+                }
+                
+                if let imageUrl = user.imageUrl {
+                    TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)) { (image) -> Void in
+                        self.headerView.activityIndicator.stopAnimating()
+                        if let image = image {
+                            self.headerView.avatar.image = image
+                        }
                     }
                 }
             }
@@ -240,6 +276,10 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tweetsTable.deselectRowAtIndexPath(indexPath, animated: false)
+        
+        if refreshControl.refreshing {
+            return
+        }
         
         if singleTweetVC == nil {
             singleTweetVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("SINGLE_TWEET_VC") as? SingleTweetViewController
