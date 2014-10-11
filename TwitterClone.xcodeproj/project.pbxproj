@@ -11,6 +11,10 @@
 		9A1843A919E9B4590002BC89 /* tabbaritem_timeline@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843A719E9B4590002BC89 /* tabbaritem_timeline@3x.png */; };
 		9A1843AC19E9B4CD0002BC89 /* tabbaritem_you@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843AA19E9B4CD0002BC89 /* tabbaritem_you@2x.png */; };
 		9A1843AD19E9B4CD0002BC89 /* tabbaritem_you@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843AB19E9B4CD0002BC89 /* tabbaritem_you@3x.png */; };
+		9A1843B019E9BDF80002BC89 /* tabbaritem_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843AE19E9BDF80002BC89 /* tabbaritem_info@2x.png */; };
+		9A1843B119E9BDF80002BC89 /* tabbaritem_info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843AF19E9BDF80002BC89 /* tabbaritem_info@3x.png */; };
+		9A1843B419E9BF570002BC89 /* bird@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843B219E9BF570002BC89 /* bird@2x.png */; };
+		9A1843B519E9BF570002BC89 /* bird@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843B319E9BF570002BC89 /* bird@3x.png */; };
 		9A219E2D19E6136F0069B000 /* avatar_big@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A219E2719E613190069B000 /* avatar_big@2x.png */; };
 		9A219E2E19E613730069B000 /* avatar_big@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A219E2819E613190069B000 /* avatar_big@3x.png */; };
 		9A219E3319E640B60069B000 /* fav_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A219E3019E640B60069B000 /* fav_small@2x.png */; };
@@ -56,6 +60,10 @@
 		9A1843A719E9B4590002BC89 /* tabbaritem_timeline@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_timeline@3x.png"; sourceTree = "<group>"; };
 		9A1843AA19E9B4CD0002BC89 /* tabbaritem_you@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_you@2x.png"; sourceTree = "<group>"; };
 		9A1843AB19E9B4CD0002BC89 /* tabbaritem_you@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_you@3x.png"; sourceTree = "<group>"; };
+		9A1843AE19E9BDF80002BC89 /* tabbaritem_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_info@2x.png"; sourceTree = "<group>"; };
+		9A1843AF19E9BDF80002BC89 /* tabbaritem_info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_info@3x.png"; sourceTree = "<group>"; };
+		9A1843B219E9BF570002BC89 /* bird@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird@2x.png"; sourceTree = "<group>"; };
+		9A1843B319E9BF570002BC89 /* bird@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird@3x.png"; sourceTree = "<group>"; };
 		9A219E2719E613190069B000 /* avatar_big@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar_big@2x.png"; sourceTree = "<group>"; };
 		9A219E2819E613190069B000 /* avatar_big@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar_big@3x.png"; sourceTree = "<group>"; };
 		9A219E3019E640B60069B000 /* fav_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fav_small@2x.png"; sourceTree = "<group>"; };
@@ -129,6 +137,10 @@
 		9A60926C19E50D21006D4A34 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				9A1843B219E9BF570002BC89 /* bird@2x.png */,
+				9A1843B319E9BF570002BC89 /* bird@3x.png */,
+				9A1843AE19E9BDF80002BC89 /* tabbaritem_info@2x.png */,
+				9A1843AF19E9BDF80002BC89 /* tabbaritem_info@3x.png */,
 				9A1843AA19E9B4CD0002BC89 /* tabbaritem_you@2x.png */,
 				9A1843AB19E9B4CD0002BC89 /* tabbaritem_you@3x.png */,
 				9A1843A619E9B4590002BC89 /* tabbaritem_timeline@2x.png */,
@@ -319,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AE1A9DE19E313A300AA4D00 /* Main.storyboard in Resources */,
+				9A1843B419E9BF570002BC89 /* bird@2x.png in Resources */,
 				9A219E2D19E6136F0069B000 /* avatar_big@2x.png in Resources */,
 				9A219E4319E64C2E0069B000 /* retweets_big@3x.png in Resources */,
 				9AE1A9E319E313A300AA4D00 /* LaunchScreen.xib in Resources */,
@@ -329,11 +342,14 @@
 				9AE1A9E019E313A300AA4D00 /* Images.xcassets in Resources */,
 				9A1843AC19E9B4CD0002BC89 /* tabbaritem_you@2x.png in Resources */,
 				9A3BF14719E7218C0070542E /* UserHeader.xib in Resources */,
+				9A1843B119E9BDF80002BC89 /* tabbaritem_info@3x.png in Resources */,
+				9A1843B019E9BDF80002BC89 /* tabbaritem_info@2x.png in Resources */,
 				9A3BF14219E708700070542E /* TweetCell.xib in Resources */,
 				9A219E3A19E641B60069B000 /* fav_big@3x.png in Resources */,
 				9A219E3919E641B60069B000 /* fav_big@2x.png in Resources */,
 				9A9FAD0219E50EF500DEADE1 /* avatar@2x.png in Resources */,
 				9A219E4619E64C2E0069B000 /* retweets_small@3x.png in Resources */,
+				9A1843B519E9BF570002BC89 /* bird@3x.png in Resources */,
 				9A219E4519E64C2E0069B000 /* retweets_small@2x.png in Resources */,
 				9A219E3419E640B60069B000 /* fav_small@3x.png in Resources */,
 				9A1843AD19E9B4CD0002BC89 /* tabbaritem_you@3x.png in Resources */,

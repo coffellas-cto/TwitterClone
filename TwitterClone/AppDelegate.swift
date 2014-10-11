@@ -39,12 +39,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var homeNavVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("TIMELINE_NAV_VC") as? UINavigationController
         homeNavVC?.tabBarItem = UITabBarItem(title: "Timeline", image: UIImage(named: "tabbaritem_timeline"), tag: 0)
         var userNavVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("TIMELINE_NAV_VC") as? UINavigationController
-        userNavVC?.tabBarItem = UITabBarItem(title: "Timeline", image: UIImage(named: "tabbaritem_you"), tag: 0)
+        userNavVC?.tabBarItem = UITabBarItem(title: "You", image: UIImage(named: "tabbaritem_you"), tag: 1)
         var userVC = userNavVC?.topViewController as TweetHomeViewController
         userVC.mode = .User
         userVC.title = "You"
         
-        tabBarController.viewControllers = [homeNavVC!, userNavVC!]
+        let launchView = NSBundle.mainBundle().loadNibNamed("LaunchScreen", owner: self, options: nil).first as? UIView
+        var aboutVC = UIViewController()
+        aboutVC.view = launchView!
+        aboutVC.tabBarItem = UITabBarItem(title: "About", image: UIImage(named: "tabbaritem_info"), tag: 1)
+                
+        tabBarController.viewControllers = [homeNavVC!, userNavVC!, aboutVC]
         window?.rootViewController = tabBarController
         
         window?.makeKeyAndVisible()
