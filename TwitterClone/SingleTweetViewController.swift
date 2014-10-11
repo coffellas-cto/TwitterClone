@@ -17,9 +17,13 @@ class SingleTweetViewController: UIViewController {
     @IBOutlet weak var retweets: UILabel!
     
     var tweet: Tweet?
+    var appDelegate: AppDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+
         avatarImage.layer.masksToBounds = true
         avatarImage.layer.cornerRadius = 40
         avatarImage.layer.borderWidth = 1
@@ -45,11 +49,17 @@ class SingleTweetViewController: UIViewController {
             
             if let user = tweet.user {
                 self.title = (user.userName)! + " says:"
-                if let imageUrl = user.imageUrl {
-                    // TODO: It downloads same images over and over again. Fix
-                    TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil), completion: { (image) -> Void in
-                        self.avatarImage.image = image
-                    })
+                if var imageUrl = user.imageUrl {
+                    imageUrl = imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)
+                    
+                    if let image = appDelegate.avatarImagesDictionary[imageUrl] {
+                        avatarImage.image = image
+                    } else {
+                        TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl, completion: { (image) -> Void in
+                            self.appDelegate.avatarImagesDictionary[imageUrl] = image
+                            self.avatarImage.image = image
+                        })
+                    }
                 }
                 
                 if let backgroundColor = user.backgroundColor {

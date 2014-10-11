@@ -127,6 +127,7 @@ class TwitterNetworkController {
             
             if let errorString = errorString {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    println(NSString(data: data, encoding: NSUTF8StringEncoding))
                     completion(errorString: "\(errorString): \(response.statusCode)", data: nil)
                 })
                 return

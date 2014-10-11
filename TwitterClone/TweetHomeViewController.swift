@@ -22,23 +22,27 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     // MARK: Outlets
     @IBOutlet weak var tweetsTable: UITableView!
     
+    //var avatarImagesDictionary = Dictionary<String, UIImage>()
+    
     // MARK: Properties
     var mode: TweetHomeViewControllerMode = .Home
     var curUser: User?
     var homeUser: User?
+    var appDelegate: AppDelegate!
     
     //paired
     var refreshControl: UIRefreshControl! = UIRefreshControl()
     
     // MARK: Private properties
     private var tweetsArray = [Tweet]()
-    private var avatarImagesDictionary = Dictionary<String, UIImage>()
     private var headerView: UserHeaderView!
     private var singleTweetVC: SingleTweetViewController?
 
     // MARK: UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userInfoTapped:", name: "userInfoTapped", object: nil)
         
@@ -74,6 +78,16 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         TwitterNetworkController.controller.setup { (errorString) -> Void in
             if errorString != nil {
                 self.showError(errorString!)
+                return
+            }
+            
+            if (self.mode == .User) && (self.curUser == nil) {
+                TwitterNetworkController.controller.fetchSelf { (errorString, userData) -> Void in
+                    self.processUserData(errorString: errorString, userData: userData)
+                    TwitterNetworkController.controller.fetchUserTimeline(self.curUser?.id, sinceID: 0, maxID: 0) { (errorString: String?, tweetsData: NSData?) -> Void in
+                        self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
+                    }
+                }
                 return
             }
             
@@ -193,8 +207,11 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         if user == nil {
             user = curUser
         }
-        else {
+        else if mode == .Home {
             homeUser = user
+        }
+        else if mode == .User {
+            curUser = user
         }
         
         if let user = user {
@@ -206,11 +223,17 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                     headerView.avatar.layer.borderColor = backgroundColor.colorWithAlphaComponent(0.5).CGColor
                 }
                 
-                if let imageUrl = user.imageUrl {
-                    TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)) { (image) -> Void in
-                        self.headerView.activityIndicator.stopAnimating()
-                        if let image = image {
-                            self.headerView.avatar.image = image
+                if var imageUrl = user.imageUrl {
+                    imageUrl = imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)
+                    self.headerView.activityIndicator.stopAnimating()
+                    if let image = appDelegate.avatarImagesDictionary[imageUrl] {
+                        self.headerView.avatar.image = image
+                    } else {
+                        TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl) { (image) -> Void in
+                            if let image = image {
+                                self.appDelegate.avatarImagesDictionary[imageUrl] = image
+                                self.headerView.avatar.image = image
+                            }
                         }
                     }
                 }
@@ -243,9 +266,9 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         if let user = tweet.user {
             cell.userName.text = user.userName
             cell.alias.text = "@" + user.alias!
-
+            
             if let imageUrl = user.imageUrl {
-                if let image = avatarImagesDictionary[imageUrl] {
+                if let image = appDelegate.avatarImagesDictionary[imageUrl] {
                     cell.avatar.image = image
                 }
                 else {
@@ -253,7 +276,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                     
                     TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl) { (image) -> Void in
                         if let image = image {
-                            self.avatarImagesDictionary[imageUrl] = image
+                            self.appDelegate.avatarImagesDictionary[imageUrl] = image
                             
                             if let cell = self.tweetsTable.cellForRowAtIndexPath(indexPath) as? TweetCell {
                                 cell.avatar.image = image

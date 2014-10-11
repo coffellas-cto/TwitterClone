@@ -12,28 +12,43 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var avatarImagesDictionary = Dictionary<String, UIImage>()
+
     var window: UIWindow?
+    var tabBarController = UITabBarController()
     
     func customizeAppearance() {
         UINavigationBar.appearance().barTintColor = UIColor(red: 48 / 255, green: 48 / 255, blue: 47 / 255, alpha: 1)
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue-Thin", size: 20)]
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 16)], forState: .Normal)
+        UITabBar.appearance().barTintColor = UIColor(red: 48 / 255, green: 48 / 255, blue: 47 / 255, alpha: 1)
+        UITabBar.appearance().tintColor = UIColor.whiteColor()
+        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 14)], forState: .Normal)
         
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
-        
-//        [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:
-//        @{UITextAttributeTextColor:[UIColor blackColor],
-//            UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-//            UITextAttributeTextShadowColor:[UIColor whiteColor],
-//            UITextAttributeFont:[UIFont boldSystemFontOfSize:12.0]
-//        }
-//        forState:UIControlStateNormal];
     }
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         customizeAppearance()
+        
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window?.backgroundColor = UIColor.redColor()
+        
+        var homeNavVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("TIMELINE_NAV_VC") as? UINavigationController
+        homeNavVC?.tabBarItem = UITabBarItem(title: "Timeline", image: UIImage(named: "tabbaritem_timeline"), tag: 0)
+        var userNavVC = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("TIMELINE_NAV_VC") as? UINavigationController
+        userNavVC?.tabBarItem = UITabBarItem(title: "Timeline", image: UIImage(named: "tabbaritem_you"), tag: 0)
+        var userVC = userNavVC?.topViewController as TweetHomeViewController
+        userVC.mode = .User
+        userVC.title = "You"
+        
+        tabBarController.viewControllers = [homeNavVC!, userNavVC!]
+        window?.rootViewController = tabBarController
+        
+        window?.makeKeyAndVisible()
+        
         return true
     }
 

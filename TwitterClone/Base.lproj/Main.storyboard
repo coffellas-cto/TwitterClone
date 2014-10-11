@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rNH-Y7-IYU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Timeline-->
         <scene sceneID="fcC-oI-wFn">
             <objects>
-                <navigationController id="rNH-Y7-IYU" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="TIMELINE_NAV_VC" id="rNH-Y7-IYU" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Timeline" id="1xC-EQ-4EJ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="edw-85-23Z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -18,7 +19,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IBS-vq-qud" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-355" y="-603"/>
+            <point key="canvasLocation" x="-407" y="-1663"/>
         </scene>
         <!--Timeline-->
         <scene sceneID="tne-QT-ifu">
@@ -33,7 +34,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="151" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ac6-dP-9Yn">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="649"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" red="0.96078431369999995" green="0.95686274510000002" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="Zdt-XG-pfs">
@@ -51,7 +52,7 @@
                         <constraints>
                             <constraint firstItem="Ac6-dP-9Yn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="C52-e8-lrM"/>
                             <constraint firstItem="Ac6-dP-9Yn" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Gtb-2f-CaU"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ac6-dP-9Yn" secondAttribute="bottom" id="gBW-DS-qMk"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Ac6-dP-9Yn" secondAttribute="bottom" constant="-49" id="gBW-DS-qMk"/>
                             <constraint firstAttribute="trailing" secondItem="Ac6-dP-9Yn" secondAttribute="trailing" id="kHs-1S-MIV"/>
                         </constraints>
                     </view>
@@ -62,7 +63,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="340" y="-619"/>
+            <point key="canvasLocation" x="288" y="-1663"/>
         </scene>
         <!--Single Tweet View Controller-->
         <scene sceneID="MYs-T8-VCh">
@@ -185,7 +186,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0az-fY-0wg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1029" y="-619"/>
+            <point key="canvasLocation" x="-407" y="-775"/>
         </scene>
     </scenes>
     <resources>
