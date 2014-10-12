@@ -29,6 +29,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     var curUser: User?
     var homeUser: User?
     var appDelegate: AppDelegate!
+    var canLoadOlderTweets = false
     
     //paired
     var refreshControl: UIRefreshControl! = UIRefreshControl()
@@ -190,6 +191,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                 self.tweetsArray = tweets
                 println(self.tweetsArray.count) 
                 self.tweetsTable.reloadData()
+                canLoadOlderTweets = true
             }
         }
     }
@@ -315,10 +317,22 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         }
     }
     
-    deinit {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let contentYOffset = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.height
+        let bottom = scrollView.contentInset.bottom
+        if (contentHeight - contentYOffset + bottom <= height) && canLoadOlderTweets {
+            canLoadOlderTweets = false
+            let lastTweet = tweetsArray.last
+            if let lastID = lastTweet?.id {
+                TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: 0, maxID: lastID) { (errorString: String?, tweetsData: NSData?) -> Void in
+                    self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
+                }
+            }
+            println("REFRESHING TIME")
+        }
+        
+        //println("height:\(height) contentHeight:\(contentHeight) offset:\(contentYOffset) bottom:\(bottom)")
     }
-    
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        return tableView.dequeueReusableHeaderFooterViewWithIdentifier("TEST") as? UIView
-//    }
 }

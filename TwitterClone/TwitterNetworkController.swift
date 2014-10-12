@@ -10,6 +10,20 @@ import Foundation
 import Accounts
 import Social
 
+// http://vperi.com/2014/06/04/flatten-an-array-to-a-string-swift-extension/
+extension Array {
+    func combine(separator: String) -> String{
+        var str : String = ""
+        for (idx, item) in enumerate(self) {
+            str += "\(item)"
+            if idx < self.count - 1 {
+                str += separator
+            }
+        }
+        return str
+    }
+}
+
 class TwitterNetworkController {
     private var twitterAccount: ACAccount?
     private var accountType: ACAccountType
@@ -80,18 +94,33 @@ class TwitterNetworkController {
         }
     }
     
-    func fetchUserTimeline(userID: Int?, sinceID: Int, maxID: Int?, completion: (errorString: String?, tweetsData: NSData?) -> Void) {
-        let count = sinceID == 0 ? "40" : "0"
+    func fetchUserTimeline(userID: Int?, sinceID: Int, maxID: Int, completion: (errorString: String?, tweetsData: NSData?) -> Void) {
+        var parametersArray = [String]()
+        if maxID != 0 {
+            parametersArray.append("max_id=\(maxID - 1)")
+        }
+        else if sinceID != 0 {
+            parametersArray.append("since_id=\(sinceID)")
+        }
+        
+        var urlString: String
+        
         if let userID = userID {
-            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/user_timeline.json", parameters: ["count": count, "user_id": "\(userID)", "since_id": sinceID], completion: { (errorString, data) -> Void in
-                completion(errorString: errorString, tweetsData: data)
-            })
+            parametersArray.append("user_id=\(userID)")
+            urlString = "https://api.twitter.com/1.1/statuses/user_timeline.json"
         }
         else {
-            performRequest(requestMethod: .GET, URLString: "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: ["count": count, "since_id": sinceID], completion: { (errorString, data) -> Void in
-                completion(errorString: errorString, tweetsData: data)
-            })
+            urlString = "https://api.twitter.com/1.1/statuses/home_timeline.json"
         }
+        
+        if !parametersArray.isEmpty {
+            let parametersString = parametersArray.combine("&")
+            urlString += "?\(parametersString)"
+        }
+        
+        performRequest(requestMethod: .GET, URLString:urlString, parameters: nil, completion: { (errorString, data) -> Void in
+            completion(errorString: errorString, tweetsData: data)
+        })
     }
     
     // MARK: Private Methods
@@ -108,7 +137,7 @@ class TwitterNetworkController {
         timelineRequest.performRequestWithHandler({ (data: NSData!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
             if error != nil {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    completion(errorString: "Error happened during constructing request", data: nil)
+                    completion(errorString: "Error happened during constructing request: \(error.localizedDescription)", data: nil)
                 })
                 return
             }
