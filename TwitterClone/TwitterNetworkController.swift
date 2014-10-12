@@ -70,7 +70,7 @@ class TwitterNetworkController {
         }
     }
     
-    func downloadImage(#imageURLString: String, completion: (image: UIImage?) -> Void) {
+    func downloadImage(#imageURLString: String, completion: (image: NSData?) -> Void) {
 //        NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: imageURLString), completionHandler: { (data: NSData!, resonse: NSURLResponse!, error: NSError!) -> Void in
 //            if error != nil {
 //                println("\(error.localizedDescription) for \(imageURLString)")
@@ -80,10 +80,12 @@ class TwitterNetworkController {
 //            completion(image: UIImage(data: data))
 //        }).resume()
         
+        //println("Downloading \(imageURLString)")
+        
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-            let image = UIImage(data: NSData(contentsOfURL: NSURL(string: imageURLString)))
+            let imageData = NSData(contentsOfURL: NSURL(string: imageURLString))
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                completion(image: image)
+                completion(image: imageData)
             })
         })
     }

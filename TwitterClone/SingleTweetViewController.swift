@@ -52,12 +52,12 @@ class SingleTweetViewController: UIViewController {
                 if var imageUrl = user.imageUrl {
                     imageUrl = imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)
                     
-                    if let image = appDelegate.avatarImagesDictionary[imageUrl] {
-                        avatarImage.image = image
+                    if let image = appDelegate.cachedImageForUrl(imageUrl) {
+                        avatarImage.image = UIImage(data: image)
                     } else {
                         TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl, completion: { (image) -> Void in
-                            self.appDelegate.avatarImagesDictionary[imageUrl] = image
-                            self.avatarImage.image = image
+                            self.appDelegate.saveCachedImageForUrl(imageUrl, data: image)
+                            self.avatarImage.image = UIImage(data: image!)
                         })
                     }
                 }

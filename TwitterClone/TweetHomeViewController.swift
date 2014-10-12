@@ -19,15 +19,13 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
     // MARK: Outlets
     @IBOutlet weak var tweetsTable: UITableView!
     
-    //var avatarImagesDictionary = Dictionary<String, UIImage>()
-    
     // MARK: Properties
     var mode: TweetHomeViewControllerMode = .Home
     var curUser: User?
     var homeUser: User?
     var appDelegate: AppDelegate!
     var canLoadOlderTweets = false
-    
+        
     //paired
     var refreshControl: UIRefreshControl! = UIRefreshControl()
     
@@ -231,13 +229,13 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                 if var imageUrl = user.imageUrl {
                     imageUrl = imageUrl.stringByReplacingOccurrencesOfString("_normal", withString: "", options: nil, range: nil)
                     self.headerView.activityIndicator.stopAnimating()
-                    if let image = appDelegate.avatarImagesDictionary[imageUrl] {
-                        self.headerView.avatar.image = image
+                    if let image = appDelegate.cachedImageForUrl(imageUrl) {
+                        self.headerView.avatar.image = UIImage(data: image)
                     } else {
                         TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl) { (image) -> Void in
                             if let image = image {
-                                self.appDelegate.avatarImagesDictionary[imageUrl] = image
-                                self.headerView.avatar.image = image
+                                self.appDelegate.saveCachedImageForUrl(imageUrl, data: image)
+                                self.headerView.avatar.image = UIImage(data: image)
                             }
                         }
                     }
@@ -273,18 +271,18 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             cell.alias.text = "@" + user.alias!
             
             if let imageUrl = user.imageUrl {
-                if let image = appDelegate.avatarImagesDictionary[imageUrl] {
-                    cell.avatar.image = image
+                if let image = appDelegate.cachedImageForUrl(imageUrl) {
+                    cell.avatar.image = UIImage(data: image)
                 }
                 else {
                     cell.avatar.image = UIImage(named: "avatar")
                     
                     TwitterNetworkController.controller.downloadImage(imageURLString: imageUrl) { (image) -> Void in
                         if let image = image {
-                            self.appDelegate.avatarImagesDictionary[imageUrl] = image
+                            self.appDelegate.saveCachedImageForUrl(imageUrl, data: image)
                             
                             if let cell = self.tweetsTable.cellForRowAtIndexPath(indexPath) as? TweetCell {
-                                cell.avatar.image = image
+                                cell.avatar.image = UIImage(data: image)
                             }
                         }
                     }
@@ -333,7 +331,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                     self.processTimelineData(errorString: errorString, tweetsData: tweetsData, append: true)
                 }
             }
-            println("REFRESHING TIME")
+            //println("REFRESHING TIME")
         }
     }
 }

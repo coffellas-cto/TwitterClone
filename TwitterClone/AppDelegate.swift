@@ -12,10 +12,60 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var avatarImagesDictionary = Dictionary<String, UIImage>()
+    //var avatarImagesDictionary = Dictionary<String, NSData>()
 
     var window: UIWindow?
     var tabBarController = UITabBarController()
+    
+    // MARK: Public Methods
+    // Core Data Manipulation
+    
+    func saveCachedImageForUrl(urlString: String?, data: NSData?) {
+        if (urlString == nil) || (data == nil) {
+            return
+        }
+        
+        if cachedImageExistsForUrl(urlString) {
+            //println("Image for URL \(urlString) exists!")
+            return
+        }
+        
+        var cachedImage: CachedImage = NSEntityDescription.insertNewObjectForEntityForName("CachedImage", inManagedObjectContext: self.managedObjectContext!) as CachedImage
+        cachedImage.url = urlString
+        cachedImage.data = data
+        self.saveContext()
+    }
+    
+    func cachedImageForUrl(urlString: String?) -> NSData? {
+        if let urlString = urlString {
+            if let fetchRequest = fetchRequestCommon(urlString) {
+                var error: NSError?
+                if let results = self.managedObjectContext?.executeFetchRequest(fetchRequest, error: &error) as NSArray? {
+                    return (results.firstObject as? CachedImage)?.data
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    private func cachedImageExistsForUrl(urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let fetchRequest = fetchRequestCommon(urlString) {
+                var error: NSError?
+                return self.managedObjectContext?.countForFetchRequest(fetchRequest, error: &error) != 0
+            }
+        }
+        
+        return false
+    }
+    
+    private func fetchRequestCommon(urlString: String) -> NSFetchRequest? {
+        var fetchRequest = NSFetchRequest(entityName: "CachedImage")
+        fetchRequest.predicate = NSPredicate(format: "url = %@", urlString)
+        return fetchRequest
+    }
+    // MARK: Default Methods
     
     func customizeAppearance() {
         UINavigationBar.appearance().barTintColor = UIColor(red: 48 / 255, green: 48 / 255, blue: 47 / 255, alpha: 1)

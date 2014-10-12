@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A135C0B19EA4F0C00809456 /* CachedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A135C0A19EA4F0C00809456 /* CachedImage.m */; };
 		9A1843A819E9B4590002BC89 /* tabbaritem_timeline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843A619E9B4590002BC89 /* tabbaritem_timeline@2x.png */; };
 		9A1843A919E9B4590002BC89 /* tabbaritem_timeline@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843A719E9B4590002BC89 /* tabbaritem_timeline@3x.png */; };
 		9A1843AC19E9B4CD0002BC89 /* tabbaritem_you@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1843AA19E9B4CD0002BC89 /* tabbaritem_you@2x.png */; };
@@ -56,6 +57,9 @@
 
 /* Begin PBXFileReference section */
 		9A0BC80519E32E7A007D2BB3 /* tweet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tweet.json; sourceTree = SOURCE_ROOT; };
+		9A135C0819EA4F0B00809456 /* TwitterClone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TwitterClone-Bridging-Header.h"; sourceTree = "<group>"; };
+		9A135C0919EA4F0C00809456 /* CachedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CachedImage.h; sourceTree = "<group>"; };
+		9A135C0A19EA4F0C00809456 /* CachedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CachedImage.m; sourceTree = "<group>"; };
 		9A1843A619E9B4590002BC89 /* tabbaritem_timeline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_timeline@2x.png"; sourceTree = "<group>"; };
 		9A1843A719E9B4590002BC89 /* tabbaritem_timeline@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_timeline@3x.png"; sourceTree = "<group>"; };
 		9A1843AA19E9B4CD0002BC89 /* tabbaritem_you@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbaritem_you@2x.png"; sourceTree = "<group>"; };
@@ -201,6 +205,9 @@
 				9A2888DD19E5DE1F00BF4230 /* Controllers */,
 				9AE1A9FD19E32C5300AA4D00 /* ViewControllers */,
 				9AC1E2CC19E4E48400AAE522 /* Views */,
+				9A135C0919EA4F0C00809456 /* CachedImage.h */,
+				9A135C0A19EA4F0C00809456 /* CachedImage.m */,
+				9A135C0819EA4F0B00809456 /* TwitterClone-Bridging-Header.h */,
 			);
 			path = TwitterClone;
 			sourceTree = "<group>";
@@ -375,6 +382,7 @@
 				9AF411BB19E5B52000D398C8 /* TwitterNetworkController.swift in Sources */,
 				9AE1A9D619E313A300AA4D00 /* AppDelegate.swift in Sources */,
 				9A3BF14919E724B10070542E /* UserHeaderView.swift in Sources */,
+				9A135C0B19EA4F0C00809456 /* CachedImage.m in Sources */,
 				9AE1A9FC19E32C4E00AA4D00 /* TweetHomeViewController.swift in Sources */,
 				9ACFB72D19E5FF550068982D /* SingleTweetViewController.swift in Sources */,
 				9A3BF14B19E735630070542E /* User.swift in Sources */,
@@ -505,10 +513,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = TwitterClone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TwitterClone/TwitterClone-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -516,10 +527,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = TwitterClone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TwitterClone/TwitterClone-Bridging-Header.h";
 			};
 			name = Release;
 		};
