@@ -82,14 +82,14 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             if (self.mode == .User) && (self.curUser == nil) {
                 TwitterNetworkController.controller.fetchSelf { (errorString, userData) -> Void in
                     self.processUserData(errorString: errorString, userData: userData)
-                    TwitterNetworkController.controller.fetchUserTimeline(self.curUser?.id, sinceID: 0, maxID: 0) { (errorString: String?, tweetsData: NSData?) -> Void in
+                    TwitterNetworkController.controller.fetchUserTimeline(self.curUser?.id, sinceID: "0", maxID: "0") { (errorString: String?, tweetsData: NSData?) -> Void in
                         self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
                     }
                 }
                 return
             }
             
-            TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: 0, maxID: 0) { (errorString: String?, tweetsData: NSData?) -> Void in
+            TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: "0", maxID: "0") { (errorString: String?, tweetsData: NSData?) -> Void in
                 self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
             }
             
@@ -120,7 +120,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         if tweetsArray.count > 0 {
             let tweet = tweetsArray[0]
             if let tweetID = tweet.id {
-                TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: tweetID, maxID: 0) { (errorString, tweetsData) -> Void in
+                TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: tweetID, maxID: "0") { (errorString, tweetsData) -> Void in
                     self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
                 }
             }
@@ -192,7 +192,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                     self.tweetsArray = tweets + self.tweetsArray
                 }
             
-                //println(self.tweetsArray.count)
+                //println("tweets.count: \(tweets.count)")
                 self.tweetsTable.reloadData()
                 canLoadOlderTweets = !(append && tweets.isEmpty)
             }
@@ -329,7 +329,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             canLoadOlderTweets = false
             let lastTweet = tweetsArray.last
             if let lastID = lastTweet?.id {
-                TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: 0, maxID: lastID) { (errorString: String?, tweetsData: NSData?) -> Void in
+                TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: "0", maxID: lastID) { (errorString: String?, tweetsData: NSData?) -> Void in
                     self.processTimelineData(errorString: errorString, tweetsData: tweetsData, append: true)
                 }
             }

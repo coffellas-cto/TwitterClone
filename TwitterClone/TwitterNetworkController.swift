@@ -94,12 +94,12 @@ class TwitterNetworkController {
         }
     }
     
-    func fetchUserTimeline(userID: Int?, sinceID: Int, maxID: Int, completion: (errorString: String?, tweetsData: NSData?) -> Void) {
+    func fetchUserTimeline(userID: Int?, sinceID: NSString, maxID: NSString, completion: (errorString: String?, tweetsData: NSData?) -> Void) {
         var parametersArray = [String]()
-        if maxID != 0 {
-            parametersArray.append("max_id=\(maxID - 1)")
+        if maxID.longLongValue != 0 {
+            parametersArray.append("max_id=\(maxID.longLongValue - 1)")
         }
-        else if sinceID != 0 {
+        else if sinceID.longLongValue != 0 {
             parametersArray.append("since_id=\(sinceID)")
         }
         

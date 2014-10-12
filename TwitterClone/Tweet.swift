@@ -24,14 +24,14 @@ class Tweet {
     var text: String?
     var favouriteCount: Int?
     var retweets: Int?
-    var id: Int?
+    var id: String?
     
     // MARK: Private Properties
     private var date: NSDate?
     
     // MARK: 
     init(tweetDictionary dic: NSDictionary) {
-        id = dic["id"] as? Int
+        id = dic["id_str"] as? String
         text = dic["text"] as? String
         favouriteCount = dic["favorite_count"] as? Int
         retweets = dic["retweet_count"] as? Int
