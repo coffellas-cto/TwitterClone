@@ -8,3 +8,5 @@ TwitterClone for iOS8
 - Infinite scrolling on the bottom of the timeline.
 - Pull to refresh on the top of the timeline.
 - Core Data is used to store cached images.
+
+![App screenshots](https://cloud.githubusercontent.com/assets/3193877/4605410/a2b53636-51e0-11e4-995f-e2fd91aa5ee4.jpg)
