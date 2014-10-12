@@ -15,9 +15,6 @@ enum TweetHomeViewControllerMode {
     case User
 }
 
-// TODO: block refreshControl before the first call to timeline
-
-
 class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: Outlets
     @IBOutlet weak var tweetsTable: UITableView!
@@ -128,7 +125,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
                 }
             }
         }
-        println("REFRESHED")
+        //println("REFRESHED")
     }
     
     func userInfoTapped(notification: NSNotification) {
@@ -178,7 +175,7 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         UIAlertView(title: "Error", message: errorString, delegate: nil, cancelButtonTitle: "OK").show()
     }
     
-    private func processTimelineData(#errorString: String?, tweetsData: NSData?) {
+    private func processTimelineData(#errorString: String?, tweetsData: NSData?, append: Bool = false) {
         refreshControl.endRefreshing()
         
         if let errorString = errorString {
@@ -188,10 +185,16 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
         
         if let tweetsData = tweetsData {
             if var tweets = Tweet.parseJSONDataIntoTweets(tweetsData) {
-                self.tweetsArray = tweets
-                println(self.tweetsArray.count) 
+                if append {
+                    self.tweetsArray += tweets
+                }
+                else {
+                    self.tweetsArray = tweets + self.tweetsArray
+                }
+            
+                //println(self.tweetsArray.count)
                 self.tweetsTable.reloadData()
-                canLoadOlderTweets = true
+                canLoadOlderTweets = !(append && tweets.isEmpty)
             }
         }
     }
@@ -327,12 +330,10 @@ class TweetHomeViewController: UIViewController, UITableViewDataSource, UITableV
             let lastTweet = tweetsArray.last
             if let lastID = lastTweet?.id {
                 TwitterNetworkController.controller.fetchUserTimeline(self.mode == .Home ? nil : self.curUser?.id, sinceID: 0, maxID: lastID) { (errorString: String?, tweetsData: NSData?) -> Void in
-                    self.processTimelineData(errorString: errorString, tweetsData: tweetsData)
+                    self.processTimelineData(errorString: errorString, tweetsData: tweetsData, append: true)
                 }
             }
             println("REFRESHING TIME")
         }
-        
-        //println("height:\(height) contentHeight:\(contentHeight) offset:\(contentYOffset) bottom:\(bottom)")
     }
 }
